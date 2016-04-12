@@ -1,0 +1,26 @@
+/**
+* @Author: Lim Mingjie, Kenneth <Astrianna>
+* @Date:   2016-04-12T18:09:10-04:00
+* @Email:  me@kenlimmj.com
+* @Last modified time: 2016-04-12T18:15:54-04:00
+* @License: MIT
+*/
+
+main {
+    box-sizing: border-box;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.media-object {
+    width: 100px;
+    height: 100px;
+
+    border: 1px solid #444;
+    border-radius: 2px;
+
+    object-fit: cover;
+}
