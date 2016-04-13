@@ -1,0 +1,353 @@
+
+<html>
+<head>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Lato:900' rel='stylesheet' type='text/css'>
+<!-- Load the d3 library. -->
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<style>
+body { font-family: "Open Sans"; } div { margin: 30px; }
+svg { border: solid black 1px; }
+/* The default styles for axis elements stink. What should they be? */
+.axis path {}
+.axis line {}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+
+/* Initialize map */
+var width = 960,
+    height = 500;
+
+var projection = d3.geo.albersUsa();
+
+var path = d3.geo.path().projection(projection);
+
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+/* Set background color*/
+svg.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "#A3D5F0");
+
+
+var g = svg.append("g");
+
+
+/* Legend and captions */ 
+svg.append("rect")
+	.attr("x", "810")
+	.attr("y", "300")
+	.attr("width", "150")
+	.attr("height", "200")
+	.attr("stroke-width", "0.5")
+	.attr("stroke", "#808080")
+	.style("fill", "#ffffff");
+
+svg.append("text").text("WHERE DO").attr("x", 15).attr("y", 32).attr("fill", "black").style("font-size", "18px").style("font-family", "'Lato',sans-serif");
+svg.append("text").text("AMERICANS").attr("x", 15).attr("y", 52).attr("fill", "black").style("font-size", "18px").style("font-family", "'Lato',sans-serif");
+svg.append("text").text("FLY?").attr("x", 15).attr("y", 72).attr("fill", "black").style("font-size", "18px").style("font-family", "'Lato',sans-serif");
+svg.append("text").text("Mapping non-stop air routes ").attr("x",810).attr("y",240).style("font-size", "10px").style("font-style", "italic");
+svg.append("text").text("among largest 30 U.S. cities ").attr("x",810).attr("y",255).style("font-size", "10px").style("font-style", "italic");
+svg.append("text").text("and number of passengers on ").attr("x",810).attr("y",270).style("font-size", "10px").style("font-style", "italic");
+svg.append("text").text("each route (Jan to Nov 2014). ").attr("x",810).attr("y",285).style("font-size", "10px").style("font-style", "italic");
+
+
+
+svg.append("text").text("CITIES").attr("x",865).attr("y", 318).style("font-size", "12px");
+svg.append("circle").attr("cx",830).attr("cy",330).attr("r",Math.log(60)*1.2).style("fill","white").style("stroke","red").style("stroke-width","1.3");
+svg.append("circle").attr("cx",830).attr("cy",346.5).attr("r",Math.log(200)*1.2).style("fill","white").style("stroke","red").style("stroke-width","1.3");
+svg.append("circle").attr("cx",830).attr("cy",365).attr("r",Math.log(800)*1.2).style("fill","white").style("stroke","red").style("stroke-width","1.3");
+svg.append("text").text("pop. 600,000 (~Las Vegas)").attr("x", 848).attr("y", 332).style("font-size", "7px");
+svg.append("text").text("pop. 2,000,000 (~Houston)").attr("x", 848).attr("y", 349).style("font-size", "7px");
+svg.append("text").text("pop. 8,000,000 (~New York)").attr("x", 848).attr("y", 366).style("font-size", "7px");
+
+svg.append("text").text("ROUTES/# OF PASSENGERS").attr("x", 815).attr("y", 393).style("font-size", "11px");
+
+svg.append("text").text("Note: since Fort Worth (17th largest) shares the same airport system with Dallas (9th largest), ").attr("x", 485).attr("y", 470).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("we combine the two cities and substitute Milwaukee (31st) for Fort Worth.").attr("x", 485).attr("y", 480).style("font-size", "5px").attr("stroke","grey");
+
+
+var bar1 = svg.append("path")
+				 .attr("d", "M870 406 L950 406")
+				 .attr("stroke","#f8f8bf")
+	    		 .attr("stroke-width",0.5)
+	    		 .attr("fill","none");
+var text1 = svg.append("text").text("<100K")
+				.attr("x", 820)
+				.attr("y", 410)
+				.style("font-size", "10px");
+
+var bar2 = svg.append("path")
+				 .attr("d", "M870 426 L950 426")
+				 .attr("stroke","#c9ff7b")
+	    		 .attr("stroke-width",0.5)
+	    		 .attr("fill","none");
+
+var text2 = svg.append("text").text("100-500K")
+				.attr("x", 820)
+				.attr("y", 430)
+				.style("font-size", "10px");
+
+var bar3 = svg.append("path")
+				 .attr("d", "M870 446 L950 446")
+				 .attr("stroke","#a6d96a")
+	    		 .attr("stroke-width",0.5)
+	    		 .attr("fill","none");
+var text3 = svg.append("text").text("500K-1M")
+				.attr("x", 820)
+				.attr("y", 450)
+				.style("font-size", "10px");
+
+var bar4 = svg.append("path")
+				 .attr("d", "M870 466 L950 466")
+				 .attr("stroke","#f46d43")
+	    		 .attr("stroke-width",0.7)
+	    		 .attr("fill","none");
+var text4 = svg.append("text").text("1M-2M")
+				.attr("x", 820)
+				.attr("y", 470)
+				.style("font-size", "10px");
+
+var bar5 = svg.append("path")
+				 .attr("d", "M870 486 L950 486")
+				 .attr("stroke","#a50026")
+	    		 .attr("stroke-width",1.2)
+	    		 .attr("fill","none");
+var text5 = svg.append("text").text(">2M")
+				.attr("x", 820)
+				.attr("y", 490)
+				.style("font-size", "10px");
+
+
+
+
+/* Draw map, city dots and routes */		
+d3.json("us.json", function(error, us) {
+
+	var states = topojson.feature(us, us.objects.states).features;
+
+	g.selectAll("path")
+		.data(states)
+		.enter().append("path")
+		.attr("d", path)
+		.style("fill", "#ffffff")
+		.style("stroke", "#d0d0d0")
+		.style("stroke-width", 0.3);
+
+
+	/* City coordinates */
+	var ny = projection([-73.9385, 40.6643]);
+	var la = projection([-118.4108, 34.0194]);
+	var chicago = projection([-87.6818, 41.8376]);
+	var houston = projection([-95.38, 29.78]);
+	var phila = projection([-75.1333, 40]);
+	var phoenix = projection([-112.08, 33.57]);
+	var sanAntonio = projection([-98.5251, 29.47]);
+	var sanDiego = projection([-117.13, 32.81]);
+	var dallas = projection([-96.79, 32.7]);
+	var sanJose = projection([-121.81, 37.2969]);
+	var austin = projection([-97.7560, 30.3072]);
+	var indianapolis = projection([-86.14, 39.77]);
+	var jacksonville = projection([-81.66, 30.33]);
+	var sanFrancisco = projection([-122.42, 37.7]);
+	var columbus = projection([-82.99, 39.99]);
+	var charlotte = projection([-80.83, 35.20]);
+	var detroit = projection([-83.10, 42.38]);
+	var elPaso = projection([-106.43, 31.85]);
+	var memphis = projection([-89.98, 35.10]);
+	var seattle = projection([-122.35, 47.62]);
+	var denver = projection([-104.88, 39.76]);
+	var dc = projection([-77.02, 38.90]);
+	var boston = projection([-71.02, 42.33]);
+	var nashville = projection([-86.78, 36.17]);
+	var baltimore = projection([-76.61, 39.30]);
+	var oklahoma = projection([-97.51, 35.4671]);
+	var louisville = projection([-85, 38]);
+	var portland = projection([-122.65, 45.53]);
+	var lv = projection([-115.26, 36.22]);
+	var milwaukee = projection([-87.96, 43.06]);
+
+
+	var cityList=[ny,la,chicago,houston,phila,phoenix,sanAntonio,sanDiego,dallas,sanJose,austin,indianapolis,jacksonville,sanFrancisco,columbus,charlotte,detroit,elPaso,memphis,seattle,denver,dc,boston,nashville,baltimore,oklahoma,louisville,portland,lv,milwaukee];
+
+	/* City population data*/
+	var cityArea = [841,388,272,220,155,151,141,136,126,100,89,84,84,83,82,80,69,67,65,65,65,65,65,63,62,61,61,61,60,60];
+
+	/* 30*30 array of air traffic data between cities */
+	var passengers = [[0,4189292,5070810,2082236,556549,1180878,125113,682848,2203496,77548,587710,356270,559482,3483895,439088,2722376,1402888,0,92891,1036677,1792074,1687738,2563870,751406,166473,23669,145714,347996,1530595,391622],
+		[4189292,0,2674330,1661631,661796,1441353,229198,602373,2280728,1100220,486080,157570,0,4220436,147163,598976,708093,167577,61110,1775797,1703586,1296819,1027094,390620,267338,84531,0,368641,2137551,91724],
+		[5070810,2674330,0,1637923,1563048,1844080,401122,1031641,2005872,267466,505206,566627,241056,2555736,867626,1178137,1378256,74481,399980,715833,2108525,2170633,1961611,809691,904743,301046,531415,844882,1718980,382322],
+		[2082236,1661631,1637923,0,442177,1048697,790459,630106,2561471,172857,809476,299502,163468,1066596,144508,850273,486551,334736,250988,643668,1672379,961931,667688,387647,445163,530167,79434,278172,1208292,84629],
+		[556549,661796,1563048,442177,0,752751,790459,214825,967201,0,60850,212956,140450,687512,215813,752502,610706,0,44661,301953,596084,359559,1212117,266854,232372,0,76087,253703,710074,114326],
+		[1180878,1441353,1844080,1048697,752751,0,379913,1147133,1374456,752751,457627,320090,0,1623072,239565,902120,724473,429230,0,1209586,1988263,370981,376753,172544,427017,134292,78760,809218,1262042,328235],
+		[125113,229198,401122,790459,790459,379913,0,123522,1724848,0,0,0,0,81645,0,164721,117749,133133,0,101530,321984,97372,0,123428,167690,0,0,0,284438,0],
+		[682848,602373,1031641,630106,214825,1147133,123522,0,949282,616364,131579,0,0,2035020,0,488188,232289,0,0,853164,1023093,331726,254462,93977,203955,0,0,464495,860825,0],
+		[2203496,2280728,2005872,2561471,967201,1374456,1724848,949282,0,398669,1712001,379904,293975,1448393,325599,1109629,792586,738515,354693,1012902,1740208,1297173,890097,689583,607604,697697,222621,498971,1410977,240848],
+		[77548,1100220,267466,172857,0,752751,0,616364,398669,0,136232,0,0,0,0,0,0,0,0,785713,461669,0,56284,0,0,0,0,493781,591012,0],
+		[587710,486080,505206,809476,60850,457627,0,131579,1712001,136232,0,0,0,467382,0,144504,133316,129752,0,112378,604013,188086,63214,129653,154453,0,0,21683,304199,0],
+		[356270,157570,566627,299502,212956,320090,0,0,379904,0,0,0,0,68682,0,390994,262386,0,25499,0,474800,321055,70667,0,192303,0,0,0,226313,0],
+		[559482,0,241056,163468,140450,0,0,0,293975,0,0,0,0,0,0,498147,46950,0,0,0,80438,246200,132952,178863,240636,0,0,0,35109,0],
+		[3483895,4220436,2555736,1066596,687512,1623072,81645,2035020,1448393,0,467382,68682,0,0,0,592545,500834,0,0,2455620,1783674,1186839,1173077,0,140478,36424,0,1427424,2358507,92846],
+		[439088,147163,867626,144508,215813,239565,0,0,325599,0,0,0,0,0,0,332102,198237,0,0,0,171255,280131,51802,128944,248848,0,0,0,180011,0],
+		[2722376,598976,1178137,850273,752502,902120,164721,488188,1109629,0,144504,390994,498147,592545,332102,0,715578,0,332102,275296,559192,996205,984110,436104,837925,38514,271004,76029,514719,151696],
+		[1402888,708093,1378256,486551,610706,724473,117749,232289,792586,0,133316,262386,46950,500834,198237,715578,0,0,113653,495621,695442,724586,634765,434993,547703,70964,139130,91381,883680,333322],
+		[0,167577,74481,334736,0,429230,133133,0,738515,0,129752,0,0,0,0,0,0,0,0,0,84308,0,0,0,0,0,0,0,154947,0],
+		[92891,61110,399980,250988,44661,0,0,0,354693,0,0,25499,0,0,0,332102,113653,0,0,0,122730,110015,0,0,87237,0,0,0,37197,0],
+		[1036677,1775797,715833,643668,301953,1209586,101530,853164,1012902,785713,112378,0,0,2455620,0,275296,495621,0,0,0,1390426,450744,428254,51032,98599,0,0,964917,1189312,77346],
+		[1792074,1703586,2108525,1672379,596084,1988263,321984,1023093,1740208,461669,604013,474800,80438,1783674,171255,559192,695442,84308,122730,1390426,0,1206008,655181,487255,467136,479872,104166,904061,1615005,481275],
+		[1687738,1296819,2170633,961931,359559,370981,97372,331726,1297173,0,188086,321055,246200,1186839,280131,996205,724586,0,110015,450744,1206008,0,1839963,270214,0,35306,100632,196626,288439,201293],
+		[2563870,1027094,1961611,667688,1212117,376753,0,254462,890097,56284,63214,70667,132952,1173077,51802,984110,634765,0,0,428254,655181,1839963,0,134742,917583,0,0,139126,210518,113570],
+		[751406,390620,809691,387647,266854,172544,123428,93977,689583,0,129653,0,178863,0,128944,436104,434993,0,0,51032,487255,270214,134742,0,375378,0,0,0,230587,0],
+		[166473,267338,904743,445163,232372,427017,167690,203955,607604,0,154453,192303,240636,140478,248848,837925,547703,0,87237,98599,467136,0,917583,375378,0,59848,210201,26650,603496,183515],
+		[23669,84531,301046,530167,0,134292,0,0,697697,0,0,0,0,36424,0,38514,70964,0,0,0,479872,35306,0,0,59848,0,0,0,148544,0],
+		[145714,0,531415,79434,76087,78760,0,0,222621,0,0,0,0,0,0,271004,139130,0,0,0,104166,100632,0,0,210201,0,0,0,84871,0],
+		[347996,368641,844882,278172,253703,809218,0,464495,498971,493781,21683,0,0,1427424,0,76029,91381,0,0,964917,904061,196626,139126,0,26650,0,0,0,670744,0],
+		[1530595,2137551,1718980,1208292,710074,1262042,284438,860825,1410977,591012,304199,226313,35109,2358507,180011,514719,883680,154947,37197,1189312,1615005,288439,210518,230587,603496,148544,84871,670744,0,258815],
+		[391622,91724,382322,84629,114326,328235,0,0,240848,0,0,0,0,92846,0,151696,333322,0,0,77346,481275,201293,113570,0,183515,0,0,0,258815,0]];
+	
+
+	/* array variables used for line drawing */
+	var numCities = [3900, 3701, 4002, 3403, 2504, 3305, 2006, 2607, 3808, 1909, 2210, 1811, 1512, 3613, 1714, 3015, 2716, 1317, 1118, 2819, 3520, 3121, 2922, 2123, 2324, 1425, 1226, 2427, 3228, 1629];
+	var numCities2 = [3900, 3701, 4002, 3403, 2504, 3305, 2006, 2607, 3808, 1909, 2210, 1811, 1512, 3613, 1714, 3015, 2716, 1317, 1118, 2819, 3520, 3121, 2922, 2123, 2324, 1425, 1226, 2427, 3228, 1629];
+
+	numCities.sort();
+	numCities2.sort();
+
+
+	for (var c=29;c>=0;c--){
+		var jcity = numCities.shift();
+		var j = jcity - Math.floor(jcity / 100) * 100;
+
+		var numCitiesCopy = numCities2.slice();
+		for (var d=29; d>=0; d--){
+			
+			var kcity = numCitiesCopy.shift();
+			var k = kcity - Math.floor(kcity / 100) * 100;
+			if(j!=k && passengers[j][k]!=0) {
+
+				var offsetx = 0;
+				var offsety = 0;
+
+				if(cityList[j][0] > 700 && cityList[k][0] > 700){
+					offsetx = 30;
+				}
+				else if(cityList[j][0] < 200 && cityList[k][0] < 200){
+					offsetx = -30;
+				}
+
+				else if(cityList[j][1] > 214 && cityList[k][1] > 214){
+					offsety = Math.abs(cityList[j][0] - cityList[k][0]) * (0.2);
+				}
+				else if(cityList[j][1] < 214 && cityList[k][1] < 214){
+					offsety=Math.abs(cityList[j][0] - cityList[k][0]) * (-0.155);
+				}
+				else{
+					offsety=Math.abs(cityList[j][0] - cityList[k][0]) * (-0.11);
+				}
+
+
+
+
+				var lineData=[{"x":cityList[j][0],"y":cityList[j][1]},{"x":(cityList[j][0]+cityList[k][0])/2+offsetx,"y":(cityList[j][1]+cityList[k][1])/2+offsety},{"x":cityList[k][0],"y":cityList[k][1]}];
+				console.log(cityList[j][1]);
+
+
+				var lineFunction = d3.svg.line().x(function(d){return d.x;})
+										.y(function(d){return d.y;})
+										.interpolate("basis");
+
+				if (passengers[j][k]<100000){
+					var lineGraph=svg.append("path").attr("d",lineFunction(lineData))
+	    								.attr("stroke","#f8f8bf")
+	    								.attr("stroke-width",.45)
+	    								.attr("fill","none");
+				}
+				else if(passengers[j][k]<500000 && passengers[j][k]>100000){
+					var lineGraph=svg.append("path").attr("d",lineFunction(lineData))
+	    								.attr("stroke","#c9ff7b")
+	    								.attr("stroke-width",.45)
+	    								.attr("fill","none");
+
+				}
+				else if(passengers[j][k]<1000000 && passengers[j][k]>500000){
+					var lineGraph=svg.append("path").attr("d",lineFunction(lineData))
+	    								.attr("stroke","#a6d96a")
+	    								.attr("stroke-width",.5)
+	    								.attr("fill","none");
+
+				}
+				else if(passengers[j][k]<2000000 && passengers[j][k]>1000000){
+					var lineGraph=svg.append("path").attr("d",lineFunction(lineData))
+	    								.attr("stroke","#f46d43")
+	    								.attr("stroke-width",.7)
+	    								.attr("fill","none");
+
+				}
+				else if(passengers[j][k]>2000000){
+					var lineGraph=svg.append("path").attr("d",lineFunction(lineData))
+	    								.attr("stroke","#a50026")
+	    								.attr("stroke-width",1.2)
+	    								.attr("fill","none");
+
+				}									
+	    		
+	    	}
+		}
+		
+	}
+
+	/* Draw dots */
+	for (var i=0; i<30;i++){
+		var r = Math.log(cityArea[i]) * 1.2;
+		svg.append("circle").attr("cx",cityList[i][0]).attr("cy",cityList[i][1]).attr("r",r).style("fill","white").style("stroke","red").style("stroke-width","1.3");
+	}
+
+	
+svg.append("text").text("New York").attr("x", 808).attr("y", 180).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Boston").attr("x", 835).attr("y", 138).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Philadelphia").attr("x", 803).attr("y", 195).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Baltimore").attr("x", 780).attr("y", 212).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Washington").attr("x", 770).attr("y", 221).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Charlotte").attr("x", 727).attr("y", 299).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Jacksonville").attr("x", 730).attr("y", 393).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Houston").attr("x", 488).attr("y", 430).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("San Antonio").attr("x", 435).attr("y", 435).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Austin").attr("x", 440).attr("y", 400).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Dallas").attr("x", 452).attr("y", 360).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Oklahoma City").attr("x", 448).attr("y", 323).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Memphis").attr("x", 569).attr("y", 307).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Nashville").attr("x", 625).attr("y", 302).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Louisville").attr("x", 621).attr("y", 263).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Indianapolis").attr("x", 615).attr("y", 235).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Columbus").attr("x", 660).attr("y", 205).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Seattle").attr("x", 145).attr("y", 26).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Portland").attr("x", 113).attr("y", 74).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("San Francisco").attr("x", 63).attr("y", 217).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("San Jose").attr("x", 78).attr("y", 227).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Los Angeles").attr("x", 96).attr("y", 299).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("San Diego").attr("x", 149).attr("y", 340).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Las Vegas").attr("x", 193).attr("y", 258).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Phoenix").attr("x", 226).attr("y", 340).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("El Paso").attr("x", 294).attr("y", 380).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Denver").attr("x", 375).attr("y", 230).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Chicago").attr("x", 600).attr("y", 200).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Milwaukee").attr("x", 562).attr("y", 163).style("font-size", "5px").attr("stroke","grey");
+svg.append("text").text("Detroit").attr("x", 662).attr("y", 155).style("font-size", "5px").attr("stroke","grey");
+
+
+});
+
+
+</script>
+
+</body>
+</html>

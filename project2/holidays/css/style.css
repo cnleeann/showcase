@@ -1,0 +1,250 @@
+body { 
+  font-family: "Open Sans", Serif;
+  font-weight: 300;
+  background-color: #2d3a47;
+  color: white;
+}
+
+#maincontainer{
+  margin: auto;
+  width: 1550px;
+}
+
+#holidayListTitle{
+  margin-left: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 550px;
+  text-align: center;
+  display: inline-block;
+  padding-bottom: 1em;
+}
+
+#holidaylist{
+  background-color: #2a3642;
+  border-radius: 5px;
+  margin-left: 30px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 550px;
+  display: inline-block;
+  max-height: 550px;
+  overflow:auto;
+}
+
+#holidaylist p{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#calheatmap{
+	float:left;
+	width: 600px;
+}
+
+#cal-heatmap{
+  width: 906px;
+  float: left;
+}
+
+h1,h2{
+  font-family: 'Roboto Slab', serif;
+}
+
+h1{
+  font-weight: 400;
+  margin: 0;
+  padding: 0;
+}
+
+h2{
+  margin: 0;
+  padding: 0;
+  font-weight: 300;
+  font-size: 1.2em;
+  opacity: .8;
+}
+
+#calendartitle{
+  padding-top: .75em;
+  padding-bottom: .75em;
+}
+
+.graphheader{
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 2em;
+}
+
+.cal-heatmap-container .graph-rect{
+  fill: #2d3a47;
+}
+
+.cal-heatmap-container .q0{
+  fill: #ff6378;
+  opacity: 0;
+}
+
+.cal-heatmap-container .q1{
+  fill: #ff6378;
+  opacity: 0.1;
+}
+
+.cal-heatmap-container .q2{
+  fill: #ff6378;
+  opacity: 0.2;
+}
+.cal-heatmap-container .q3{
+  fill: #ff6378;
+  opacity: 0.4;
+}
+.cal-heatmap-container .q4{
+  fill: #ff6378;
+  opacity: 0.6;
+}
+.cal-heatmap-container .q5{
+  fill: #ff6378;
+  opacity: 0.8;
+}
+.cal-heatmap-container .q6{
+  fill: #ff6378;
+  opacity: 1;
+}
+
+.graph-rect:hover {
+  border: 1px white solid;
+	stroke: white; 
+	stroke-width: 1;
+}
+
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: white;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
+.hidden { 
+  display: none; 
+}
+
+.axis path { 
+  fill: none; 
+  stroke: white;
+}
+
+.axis line { 
+  stroke: white; 
+}
+
+.axis text {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+}
+
+.tooltip{
+  font-size: 10px;
+  background-color: black;
+  padding: 1em;
+  z-index: 3;
+  display: inline-block;
+  position: absolute; 
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 3px;
+    background-color: #af5063;
+    opacity: .1;
+    border: 1px solid #413e4a;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid #57424f;
+  opacity: .5;
+  margin-top: 3em;
+  margin-bottom: 3em;
+}
+
+#scatterplot{
+  margin: auto;
+}
+
+.datasource{
+  opacity: .7;
+  font-size: 10px;
+  font-weight: 300;
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+}
+
+.datasource a{
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+  color: #ff6378;
+  opacity: .5;
+}
+
+.datasource a:hover{
+  opacity: 1;
+}
+
+.highlight{
+  color: #ff6378;
+  font-weight: 400;
+  opacity: .7;
+}
+
+#scatterPlot, #scatterPlot2{
+  display:inline-block;
+}
+
+#scatterPlotContainer{
+  width: 600px;
+  margin: auto;
+}
+
+#map{
+  width: 960px;
+  margin: auto;
+}
+
+#lastSource{
+  padding-top: 4em;
+}
