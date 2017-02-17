@@ -1,0 +1,203 @@
+var nyAirFields = {
+	"airport": [{
+		"city": "Albany",
+		"faa": "ALB",
+		"iata": "ALB",
+		"icao": "KALB",
+		"airport_name": "Albany International Airport",
+		"role": "P-S",
+		"lat": 42.651167,
+		"lng": -73.754968,
+		"enplanements_2013": 1196753
+	}, {
+		"city": "Binghamton",
+		"faa": "BGM",
+		"iata": "BGM",
+		"icao": "KBGM",
+		"airport_name": "Greater Binghamton Airport (Edwin A. Link Field)",
+		"role": "P-N",
+		"lat": 42.096968,
+		"lng": -75.914341,
+		"enplanements_2013": 95210
+	}, {
+		"city": "Buffalo",
+		"faa": "BUF",
+		"iata": "BUF",
+		"icao": "KBUF",
+		"airport_name": "Buffalo Niagara International Airport",
+		"role": "P-M",
+		"lat": 42.886447,
+		"lng": -78.878369,
+		"enplanements_2013": 2568018
+	}, {
+		"city": "Elmira",
+		"faa": "ELM",
+		"iata": "ELM",
+		"icao": "KELM",
+		"airport_name": "Elmira/Corning Regional Airport",
+		"role": "P-N",
+		"lat": 42.089797,
+		"lng": -76.807734,
+		"enplanements_2013": 129749
+	}, {
+		"city": "Islip",
+		"faa": "ISP",
+		"iata": "ISP",
+		"icao": "KISP",
+		"airport_name": "Long Island MacArthur Airport",
+		"role": "P-S",
+		"lat": 40.789967,
+		"lng": -73.097536,
+		"enplanements_2013": 662612
+	}, {
+		"city": "Ithaca",
+		"faa": "ITH",
+		"iata": "ITH",
+		"icao": "KITH",
+		"airport_name": "Ithaca Tompkins Regional Airport",
+		"role": "P-N",
+		"lat": 42.439604,
+		"lng": -76.496802,
+		"enplanements_2013": 103722
+	}, {
+		"city": "New York",
+		"faa": "JFK",
+		"iata": "JFK",
+		"icao": "KJFK",
+		"airport_name": "John F. Kennedy International Airport",
+		"role": "P-L",
+		"lat": 40.641327,
+		"lng": -73.777538,
+		"enplanements_2013": 25036855
+	}, {
+		"city": "New York",
+		"faa": "LGA",
+		"iata": "LGA",
+		"icao": "KLGA",
+		"airport_name": "LaGuardia Airport (and Marine Air Terminal)",
+		"role": "",
+		"lat": 40.776935,
+		"lng": -73.873741,
+		"enplanements_2013": 13353365
+	}, {
+		"city": "Newburgh",
+		"faa": "SWF",
+		"iata": "SWF",
+		"icao": "KSWF",
+		"airport_name": "Stewart International Airport",
+		"role": "P-N",
+		"lat": 41.503427,
+		"lng": -74.010418,
+		"enplanements_2013": 163815
+	}, {
+		"city": "Niagara Falls",
+		"faa": "IAG",
+		"iata": "IAG",
+		"icao": "KIAG",
+		"airport_name": "Niagara Falls International Airport",
+		"role": "P-N",
+		"lat": 43.103093,
+		"lng": -79.030262,
+		"enplanements_2013": 98958
+	}, {
+		"city": "Plattsburgh",
+		"faa": "PBG",
+		"iata": "PBG",
+		"icao": "KPBG",
+		"airport_name": "Plattsburgh International Airport",
+		"role": "P-N",
+		"lat": 44.69281,
+		"lng": -73.455597,
+		"enplanements_2013": 151235
+	}, {
+		"city": "Rochester",
+		"faa": "ROC",
+		"iata": "ROC",
+		"icao": "KROC",
+		"airport_name": "Greater Rochester International Airport",
+		"role": "P-S",
+		"lat": 43.185475,
+		"lng": -77.610686,
+		"enplanements_2013": 1209532
+	}, {
+		"city": "Syracuse",
+		"faa": "SYR",
+		"iata": "SYR",
+		"icao": "KSYR",
+		"airport_name": "Syracuse Hancock International Airport",
+		"role": "P-S",
+		"lat": 43.048122,
+		"lng": -76.147424,
+		"enplanements_2013": 991663
+	}, {
+		"city": "Watertown",
+		"faa": "ART",
+		"iata": "ART",
+		"icao": "KART",
+		"airport_name": "Watertown International Airport",
+		"role": "P-N",
+		"lat": 44.000997,
+		"lng": -76.024165,
+		"enplanements_2013": 18818
+	}, {
+		"city": "White Plains",
+		"faa": "HPN",
+		"iata": "HPN",
+		"icao": "KHPN",
+		"airport_name": "Westchester County Airport",
+		"role": "P-S",
+		"lat": 41.033986,
+		"lng": -73.76291,
+		"enplanements_2013": 770550
+	}, {
+		"city": "Farmingdale",
+		"faa": "FRG",
+		"iata": "FRG",
+		"icao": "KFRG",
+		"airport_name": "Republic Airport",
+		"role": "CS",
+		"lat": 40.731786,
+		"lng": -73.448158,
+		"enplanements_2013": 5547
+	}, {
+		"city": "Jamestown",
+		"faa": "JHW",
+		"iata": "JHW",
+		"icao": "KJHW",
+		"airport_name": "Chautauqua County/Jamestown Airport",
+		"role": "CS",
+		"lat": 42.097002,
+		"lng": -79.235326,
+		"enplanements_2013": 3315
+	}, {
+		"city": "Massena",
+		"faa": "MSS",
+		"iata": "MSS",
+		"icao": "KMSS",
+		"airport_name": "Massena International Airport (Richards Field)",
+		"role": "CS",
+		"lat": 44.159785,
+		"lng": -75.031583,
+		"enplanements_2013": 4788
+	}, {
+		"city": "Ogdensburg",
+		"faa": "OGS",
+		"iata": "OGS",
+		"icao": "KOGS",
+		"airport_name": "Ogdensburg International Airport",
+		"role": "CS",
+		"lat": 44.694229,
+		"lng": -75.486336,
+		"enplanements_2013": 5392
+	}, {
+		"city": "Saranac Lake",
+		"faa": "SLK",
+		"iata": "SLK",
+		"icao": "KSLK",
+		"airport_name": "Adirondack Regional Airport",
+		"role": "CS",
+		"lat": 44.329496,
+		"lng": -74.131266,
+		"enplanements_2013": 5911
+	}, ]
+};

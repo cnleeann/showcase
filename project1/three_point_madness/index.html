@@ -1,0 +1,881 @@
+<html>
+
+<head>
+
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="http://d3js.org/topojson.v1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+ 
+  <style>
+    #header {position: fixed; top: 0%; left: 0%; margin-top: 0px; margin-left: 0px; width: 100%; height: 45px; background: #222930; font-color: #E9E9E9; }​
+    body { font-family: "Open Sans"; } div { margin: 10px; }
+    .labels {width:300; height:24; border-style:none; }
+    .container { width: 3200px;  height:550px; white-space: nowrap;}
+    .sidebyside { float:left; width:600px; height:575px; border-style:none; margin:0px; padding-left:5px; }
+    .belowdiv {width:770px; height:575px; border-style:none;  padding-left:10px; margin:0px auto; padding: 30px; } 
+    .paragraph {padding-top: 30px; }
+    .axis path, .axis line {fill: none; stroke: #800080; }
+  </style>
+
+<div id = "header"></div>
+
+</head>
+<body>
+   <div>
+    <!--Create a div for the text paragraph. Introduction to the project -->
+  <div class = 'paragraph', id = 'p1', height="400", width="1000">
+    <p><font size="4" face="Helvetica">Data analytics for sports arose at the turn of the century. Since then, there has been no looking back.  Each year, teams turn to analytics to help them assemble assemble rosters, create strategies, and alter gameplans.  One major change that has come about, is the increased popularity of three point shooting.  Every year, teams are taking more three point attempts, while decreasing the number of 'inefficient' mid-range shots that they take.  Just how many more threes are being taken?  We collected the shot locations of the top players at each position for the years 2000, 2004, 2008, 2012, and 2016, to see if there are any noticeable trends.  The shot locations were used to create a heatmap of shots. A higher frequency of shots occurs at darker locations. On the other hand, lower frequency occurs at ligher locations.</font><br><font size="2"><i>(Data for shot locations was collected from stats.nba.com, link in design doc.)</i></font></p>
+    </p>
+  </div>
+   <div class="container">
+    <div class="sidebyside", id="plot15-16"><div class="labels"></div></div>
+    <div class="sidebyside", id="plot11-12"><div class="labels"></div></div>
+    <div class="sidebyside", id="plot07-08"><div class="labels"></div></div>
+    <div class="sidebyside", id="plot03-04"><div class="labels"></div></div>
+    <div class="sidebyside", id="plot99-00"><div class="labels"></div></div>
+  </div>
+  <div height="400", width="1000">
+    <p><font size="4" face="Helvetica">Threes have almost become a necessity to be successful in the league.  Three point machine Steph Curry takes an astonishing 11.1 attempts a game in 2016, 3 more than his previous high.  Likewise, players such as Kevin Durant and Klay Thompson, are taking more threes than they have ever before.  Kawhi Leonard has seen his rise to stardom come with his ability to make three point shots at an elite percentage.  The exception on this graph is Lebron James, who remains a superstar despite having lost his three point stroke.</font><br><font size="2"><i>(Data for this chart is from basketball-reference.com, link in design doc)</i></font></p>
+    </p>
+  </div>
+    <div class="belowdiv", id="plot"></div>
+    <div height="400", width="1000">
+    <p><font size="4" face="Helvetica">Is having a three point driven offense, the only way for a team to be succesful in the league? In the next graph we explore this question to see if teams attempting more threes have a higher Offensive Rating.  To put it simply, offensive rating is how many points a team scores in 100 possessions.  We see that there is a slight trend upward.</font><br><font size="2"><i>(Data for this chart is from basketball-reference.com, link in design doc)</i></font></p>
+    
+  </div>
+    <div class="belowdiv", id="plot2"></div>
+
+    <!-- Create the header for the page -->
+    <script type="text/javascript">
+
+    header = d3.select('#header');
+
+    header.append("text")
+          .attr('x', 2)
+          .style('font-weight', '500')
+          .style('font-size', '40px')
+          .style('font-family', 'Helvetica')
+          .style('color', '#E9E9E9')
+          .style('align', 'center')
+          .text("Three Point Madness");
+
+    //Scrape the data required from the internet in JSON format
+    function getPlayerShots(playerIDs, season , svg, shotLocations, shotDetails){
+      var promises = [];
+
+
+      for(var x = 0; x < playerIDs.length; x++){
+          var data = $.ajax({
+            url:'http://stats.nba.com/stats/shotchartdetail?CFID=33&CFPARAMS='+season+'&ContextFilter=&ContextMeasure=FGA&DateFrom=&DateTo=&GameID=&GameSegment=&LastNGames=0&LeagueID=00&Location=&MeasureType=Base&Month=0&OpponentTeamID=0&Outcome=&PaceAdjust=N&PerMode=PerGame&Period=0&PlayerID=' + playerIDs[x] + '&PlusMinus=N&Position=&Rank=N&RookieYear=&Season='+ season +'&SeasonSegment=&SeasonType=Regular+Season&TeamID=0&VsConference=&VsDivision=&mode=Advanced&showDetails=0&showShots=1&showZones=0&callback=?',
+            dataType: "jsonp",
+            async: false,
+            success: function(data) {
+                
+                headers = data['resultSets'][0]['headers'];
+                shots = data['resultSets'][0]['rowSet'];
+                var locations = [];
+                var made = [];
+                var shotarea=[]; //3point or 2point
+                var shotzone=[];
+                for(var x = 0; x < shots.length; x++){
+                  shotLocations.push([shots[x][17],shots[x][18]]);
+                  made.push(shots[x][20]);
+                  shotarea.push(shots[x][12]); //3PT or 2PT
+                  shotzone.push(shots[x][14]); //Center, Left Center Right Center, Left, Right, NO Backcourt
+
+                  if(shots[x][13] == "Above the Break 3" || shots[x][13] == "Right Corner 3" 
+                    || shots[x][13] == "Left Corner 3")
+                    shotDetails["3PT"] += 1;
+                  else if(shots[x][13] == "Mid-Range")
+                    shotDetails["Mid-Range"] += 1;
+                  else
+                    shotDetails["Paint"] += 1;
+                }
+              
+              }
+              
+
+          });
+        promises.push(data);
+      }  
+       $.when.apply(null, promises).done(function(){
+
+          var percentThrees = ((shotDetails["3PT"]/shotLocations.length) * 100).toFixed(1);
+          var percentMid = ((shotDetails["Mid-Range"]/shotLocations.length) * 100).toFixed(1);
+          var percentPaint = ((shotDetails["Paint"]/shotLocations.length) * 100).toFixed(1);
+           drawHeatPlot(shotLocations, svg);
+           drawCourt(svg);
+
+
+           svg.append("text")
+                    .attr("x", 24)  
+                    .attr("y", 44)
+                    .style("font-weight","bolder")
+                    .style("font-size", "40px")
+                    .style("font-family", 'Helvetica')
+                    .text(season);
+            svg.append("text")
+                    .attr("x", 360)
+                    .attr("y", 165)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", "3px")
+                    .attr("opacity", 1)
+                    .style("font-size", "25px")
+                    .style("font-family", 'Helvetica')
+                    .text(percentThrees + "%");
+            svg.append("text")
+                    .attr("x", 360)
+                    .attr("y", 165)
+                    .style("font-size", "25px")
+                    .style("font-family", 'Helvetica')
+                    .style("fill", "#01444b")
+                    .text(percentThrees + "%");
+
+            svg.append("text")
+                    .attr("x", 110)
+                    .attr("y", 270)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", "3px")
+                    .attr("opacity", 1)
+                    .style("font-size", "25px")
+                    .style("font-family", 'Helvetica')
+                    .text(percentMid + "%");
+            svg.append("text")
+                    .attr("x", 110)
+                    .attr("y", 270)
+                    .style("font-size", "25px")
+                    .style("font-family", 'Helvetica')
+                    .style("fill", "#01444b")
+                    .text(percentMid + "%");
+
+
+            svg.append("text")
+                    .attr("x", 225)
+                    .attr("y", 350)
+                    .attr("stroke", "white")
+                    .attr("stroke-width", "3px")
+                    .attr("opacity", 1)
+                    .style("font-size", "25px")
+                    .style("font-family", 'Helvetica')
+                    .text(percentPaint + "%");
+            svg.append("text")
+                    .attr("x", 225)
+                    .attr("y", 350)
+                    .style("font-size", "25px")
+                    .style("font-family", 'Helvetica')
+                    .style("fill", "#01444b ")
+                    .text(percentPaint + "%");
+            
+            ArrayofColors=["#EEDDF3", "#E4A7F6" ,"#E097F7", "#D547FF", "#C418F7", "#A915D5" ,"#9321B5", "#5C216E", "#331D3A", "#161118" ];
+
+            //set up the gradient calculation using the colors that we want
+            function addGradient(ArrayColors){
+              for (var i=0; i<ArrayColors.length; i++){
+                svg.append("rect")
+                      .attr("x", 362+i*11)
+                      .attr("y", 17)
+                      .attr("width", 10)
+                      .attr("height", 10)
+                      .attr("fill", ArrayColors[i]);
+              }
+            }
+              addGradient(ArrayofColors)
+              
+              /** Use SVG text element to describe the parts of the graph where a certain proportion of shots is made */
+              svg.append("text")
+                    .attr("x", 350)
+                    .attr("y", 39)
+                    .attr("font-size", '12px')
+                    .style("font-family", 'Helvetica')
+                    .text('Less');
+              svg.append("text")
+                    .attr("x", 435)
+                    .attr("y", 39)
+                    .attr("font-size", '12px')
+                    .style("font-family", 'Helvetica')
+                    .text('More');
+              svg.append("text")
+                    .attr("x", 365)
+                    .attr("y", 12.5)
+                    .attr("font-size", '12px')
+                    .style("font-family", 'Helvetica')
+                    .text("Shots at Location");       
+      })         
+    }
+    
+    //create function to draw the heat plot given the calculated shot locations
+    function drawHeatPlot(shotLocations, svg){
+      var numRows = 47, numCols = 50, data = [], color = d3.interpolateRgb("#e9f5f8", "#800080");
+      var cells = null;
+      var getEmptyCells = function() {
+          var emptyCells = [];
+          for (var rowNum = 0; rowNum < numRows; rowNum++) {
+              emptyCells.push([]);
+              var row = emptyCells[emptyCells.length - 1];
+              for (var colNum = 0; colNum < numCols; colNum++) {
+                  row.push({
+                      row: rowNum,
+                      col: colNum,
+                      density: 0,
+                      points: []
+                  });
+              }
+          }
+          return emptyCells;
+        };
+
+        cells = getEmptyCells();
+
+        /** Put shots into bins of size 10x10
+        */
+        for(var loc = 0; loc < shotLocations.length; loc++){
+          var x = shotLocations[loc][0];
+          var y = shotLocations[loc][1];
+          if(y > 420)
+            continue;
+     
+          var row = Math.floor( (y + 51) /10) ;
+          var col = Math.floor( (x + 250) /10) ;
+          if(col > 49 || row > 46 || row < 0 || col < 0)
+            continue;
+         
+
+          data.push({
+            x: x,
+            y: y,
+            row: row,
+            col: col,
+            cell: cells[row][col],
+            ind: loc
+          });
+          
+          cells[row][col].points.push(data[data.length - 1]);
+        }
+        
+
+        var createHeatchart = function() {
+          var min = 9999;
+          var max = -9999;
+          var l;
+          // max = 500;
+          for (var rowNum = 0; rowNum < cells.length; rowNum++) {
+              for (var colNum = 0; colNum < numCols; colNum++) {
+                  l = cells[rowNum][colNum].points.length;
+                  if (l > max) {
+                      max = l;
+                  }
+                  if (l < min) {
+                      min = l;
+                  }
+              }
+          }
+          console.log(max);
+          max = 2353;
+          svg.selectAll("g").data(cells).enter().append("svg:g").selectAll("rect").data(function(d) {
+              return d;
+          }).enter().append("svg:rect").attr("x", function(d, i) {
+              return d.col * (500 / numCols);
+          }).attr("y", function(d, i) {
+              return 460-d.row * (470 / numRows);
+          }).attr("width", 500 / numCols).attr("height", 470 / numRows).attr("fill", function(d, i) {
+              return color((Math.pow(d.points.length,2) - min) / (Math.sqrt(max)*40 - min));
+          }).attr("stroke", "#fff").attr("cell", function(d) {
+              return "r" + d.row + "c" + d.col;
+          });
+        };
+        createHeatchart();
+
+    }
+    
+    //arrays containing top 5 players in each positionfor that season
+    var playerID1516= [201939, 203081, 201566, 202738, 200768, 202689, 202322,                // Point Guards
+                       201935, 201942, 202710, 202691, 203468, 203952, 2548,   // Shooting Guards
+                       201142, 2544, 202331, 2546, 202695, 202330, 201568,     // Small Forward
+                       203076, 2547, 1717, 200794, 201583, 200746, 202324,     // Power Forward
+                       202326, 201572, 202696, 1626143, 1626157, 2200, 203083  // Center
+                       ];
+
+
+    //Source: http://espn.go.com/nba/statistics/player/_/stat/scoring-per-game/sort/avgPoints/year/2008/position/point-guards
+
+
+    var playerID1112=[201566, 101114, 101108, 201943, 2225, 201951, 201950, //PG: Russell Westbrook, Deron Williams, Chris Paul, Brandon Jennings, Tony Parker, Ty Lawson, Jrue Holiday
+                      101145, 201935, 201942, 201167, 1891, 101150, 202083, //SG: Monta Ellis, James Harden, DeMar DeRozan, Arron Afflalo, Jason Terry, Lou Williams, Wes Matthews
+                      201142, 977, 2544, 2546, 1718, 200752, 2207, 101122,//SF: Kevin Durant, Kobe Bryant, LeBron James, Carmelo Anthony, Paul Pierce, Rudy Gay, Joe Johnson
+                      201567, 200746, 1717, 201933, 2547, 1712, 201583,//PF: Kevin Love, LaMarcus Aldridge, Dirk Nowitzki, Blake Griffin, Chris Bosh, Antawn Jamison, Ryan Anderson
+                      2744, 2746, 101115, 202326, 2200, 1495, 101162 ]; //C: Al Jefferson, Josh Smith, Andrew Bynum, DeMarcus Cousins, Pau Gasol, Tim Duncan, Marcin Gortat
+    
+    
+    var playerID0708= [1884, 101108, 101114, 1889, 1497, //959, 1714,//PG: Baron Davis, Chris Paul, Deron Williams, Andrew Miller, Chauncey Billups, Steve Nash, Rafer Alston
+                       947, 2755, 2072, 2202, 1503, // 1713, 2037,//SG: Allen Iverson, Kevin Martin, Michael Redd, Jason Richardson, Tracy McGrady, Vince Carter, Jamal Crawford
+                       2544, 977, 2546, 2210, 1894,// 2207, 201142,  //SF: LeBron James, Kobe Bryant, Carmelo Anthony, Richard Jefferson, Corey Maggette, Joe Johnson, Kevin Durant
+                       2405, 1717, 2547, 1712, 2430, //2561, 1740,//PF: Amar'e Stoudemire, Dirk Nowitzki, Chris BOsh, Antwan Jamison, Carlos Boozer, David West, Rashard Lewis
+                       2744, 2730, 1495, 2746, 2246] //101106, 980 ]; //C: Al Jefferson, Dwight Howard, Tim DUncan, Josh Smith, Mehment Okur, Andrew Bogut, Zydrunas Ilgauskas
+    
+    var playerID0304= [1884, 950, 208, 1710, 1497, //1883, 2225, //PG: Baron Davis, Stephon Marbury, Sam Cassell, Mike Bibby, Chauncey Billups, Steve Francis, Tony Parker
+                       1503, 1713, 2072, 1890, 2202, //2037, 714, 1888,//SG: Tracy McGrady, Vince Carter, Michael Redd, Shawn Marion, Jason Richardson, Michael Finley, Richard Hamilton
+                       978, 977, 1718, 2546, 2544,//  1894, 2210,//SF: Peja Stojakovic, Kobe Bryant, Paul Pierce, Carmelo Anthony, LeBron James, Corey Maggette, Richard Jefferson
+                       708, 1717, 2216, 1740, 1885, //436, 949,//PF: Kevin Garnett, Dirk Nowitzki, Zach Randolph, Rashard Lewis, Lamar Odom, Juwan Howard, Shareef Abdur-Rahim
+                       1495, 406, 979, 2200, 2397]// 980, 2201 ]; //C: Tim Duncan, Shaquille O'Neal, Jermaine O'Neal, Pau Gasol, Yao Ming, Zydrunas Ilgauskas, Eddy Curry    
+    
+   var playerID9900= [56, 950, 208, 1883, 210, //353, 89,//PG: Gary Payton, Stephon Marbury, Sam Cassell, Steve Francis, Terell Brandon, Darrell Armstrong, Nick Van Exel
+                       947, 1713, 714, 951, 224, //275, 84, //SG: Allen Iverson, Vince Carter, Michael Finley, Ray Allen, Eddie Jones, Allan Houston, Latrell Sprewell
+                       255, 711, 977, 203922, 1718, // 469, 754,//SF: Grant Hill, Jerry Stackhouse, Kobe Bryant, Glenn Robinson, Paul Pierce, Jamal Mashburn, Jim Jackson
+                       252, 708, 952, 949, 1882,// 1496, 686, //PF: Karl Malone, Kevin Garnett, Antoine Walker, Shareef Abdur-Rahim, Elton Brand, Keith Van Horn, Antonio McDyess
+                       406, 185, 1495, 297, 431] //764, 22];  //C: Shaquille O'Neal, Chris Webber, Tim Duncan, Alonzo Mourning, Shawn Kemp, David Robinson, Rik Smits
+    //line graph of: dunks, free throws, 3 pointers, generic throws
+
+
+    var shotDetails = {
+                        '3PT': 0,
+                        'Mid-Range': 0,
+                        'Paint': 0
+                        };
+
+    shotLocations1516 = [];
+    plot1516 = d3.select('#plot15-16').append("svg:svg").attr("height", 475).attr("width", 600);//1200    
+    getPlayerShots(playerID1516,'2015-16', plot1516, shotLocations1516, shotDetails);
+    
+
+    shotDetails = {
+                        '3PT': 0,
+                        'Mid-Range': 0,
+                        'Paint': 0
+                        };
+    shotLocations1112 = [];
+    plot1112 = d3.select('#plot11-12').append("svg:svg").attr("height", 475).attr("width", 600);//1200    
+    getPlayerShots(playerID1112, '2011-12', plot1112, shotLocations1112, shotDetails);
+    
+
+    shotDetails = {
+                        '3PT': 0,
+                        'Mid-Range': 0,
+                        'Paint': 0
+                        };
+    shotLocations0708 = [];
+    plot0708 = d3.select('#plot07-08').append("svg:svg").attr("height", 475).attr("width", 600);//1200    
+    getPlayerShots(playerID0708, '2007-08', plot0708, shotLocations0708, shotDetails);
+
+    shotDetails = {
+                        '3PT': 0,
+                        'Mid-Range': 0,
+                        'Paint': 0
+                        };
+    shotLocations0304 = [];
+    plot0304 = d3.select('#plot03-04').append("svg:svg").attr("height", 475).attr("width", 600);//1200    
+    getPlayerShots(playerID0304, '2003-04', plot0304, shotLocations0304, shotDetails);
+
+    shotDetails = {
+                        '3PT': 0,
+                        'Mid-Range': 0,
+                        'Paint': 0
+                        };
+    shotLocations9900 = [];
+    plot9900 = d3.select('#plot99-00').append("svg:svg").attr("height", 475).attr("width", 600);//1200    
+    getPlayerShots(playerID9900, '1999-00', plot9900, shotLocations9900, shotDetails);
+
+
+    //DATA: 3Point Attemps and percentage made across 5 seasons of top ranked players: Steph Curry, K Leonard, J Redick, J Dudley, J Bayless, Kev Durant, Lebron James and Klay Thompson
+
+
+      var years= ['2011-2012', '2012-2013','2013-2014','2014-2015','2015-2016']
+      var scurry=[{attempt:4.7 , perct: .455}, {attempt:7.7, perct: .453}, {attempt:7.9, perct:.424}, {attempt:8.1, perct:.443}, {attempt: 11, perct:.465}]; 
+      var kleonard=[{attempt: 1.7, perct:.376}, {attempt:3.0, perct:.374}, {attempt:2.8,perct:.379}, {attempt:3.0,perct:.349}, {attempt:4.0,perct:.478}];
+      
+      var jredick=[{attempt:4.1, perct:.318}, {attempt:5.7, perct:.390}, {attempt:5.3,perct:.395}, {attempt:5.9,perct:.437}, {attempt:5.6,perct: .475}];
+      var jdudley=[{attempt:3.2, perct:.383}, {attempt: 3.4, perct:.391}, {attempt: 3.0,perct:.360}, {attempt:2.7,perct:.385}, {attempt:3.3,perct:.455}];
+      var jbayless=[{attempt:3.4, perct:.423}, {attempt:2.5, perct:.348}, {attempt:2.9,perct:.395}, {attempt: 2.6,perct:.308}, {attempt: 4.6,perct: .429}];
+      
+      //MVPs:
+      var kdurant=[{attempt: 5.2, perct:.387},{attempt: 4.1 ,perct:.416}, {attempt: 6.1, perct:.391}, {attempt:5.9, perct:.403}, {attempt: 6.6, perct:.391}];
+      var ljames=[{attempt:2.4, perct: .362}, {attempt:3.3 ,perct:.406}, {attempt:4.0 ,perct:.379},{ attempt:4.9 ,perct:.354}, {attempt:3.8,perct:.283}];
+      var kthompson=[{attempt:4.1, perct: .414}, {attempt:6.4 ,perct:.401}, {attempt:6.6 ,perct:.417},{ attempt:7.1 ,perct:.439}, {attempt:7.9,perct:.401}];
+  
+      
+      //Create line plot
+      var padding = 75;
+      var height = 600;
+      var width = 770;
+
+      var plot = d3.select("#plot").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .style("background", '#e9f5f8')
+        .style("border", "black");
+
+      var xScale = d3.scale.linear().domain([0, 4]).range([padding, 600-padding]);
+      var yScale = d3.scale.linear().domain([0.25, 0.5]).range([height - padding, padding]);
+
+      var xAxis = d3.svg.axis().scale(xScale).orient("bottom").ticks(5).tickFormat(function(d) { return years[d]; });
+      var yAxis = d3.svg.axis().scale(yScale).orient("left").ticks(10);
+
+      var rScale=d3.scale.sqrt().domain([1,12]).range([1,12]);
+
+      plot.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + (height - padding) + ")")
+        .call(xAxis)
+        .selectAll("text")
+              .attr("font-size", 10)
+              .attr("font-family", "Helvetica")
+              .attr("fill", "#800080");
+
+      plot.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(" + padding + ", 0)")
+        .call(yAxis)
+        .selectAll("text")
+            .attr("font-size", 10)
+            .attr("fill", "#800080")
+            .attr("font-family", "Helvetica") ;
+
+      //Axis and Title Labels
+      plot.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("font-family", "Helvetica")
+        .attr("x", width/2)
+        .attr("y", height - 20)
+        .attr("fill", "#581352")
+        .text("Seasons");
+      plot.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("font-family", "Helvetica")
+        .attr("x", -150)
+        .attr("y", 35)
+        .attr("transform", "rotate(-90)")
+        .attr("fill", "#581352")
+        .text("3 Points Field Goal Percentage");
+       plot.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "middle")
+        .attr("font-family", "Helvetica")
+        .attr("x", 300)
+        .attr("y", 50)
+        .attr("fill", "#581352")
+        .text("3 Point Field Goals by Top Shooters")
+        .style('font-weight', 'bold');
+
+      //add all the percentages of each player with the size of the circle reflective of the attempts made
+      function addPoints(array,color){
+        for(var i=0; i<array.length; i++){
+        plot.append("circle")
+        .attr("cx", xScale(i))
+        .attr("cy", yScale(array[i].perct))
+        .attr("r", rScale(array[i].attempt))
+        .attr("fill", color);
+        }
+      }
+      
+      //adds a line between each person's circles
+      function addLine(array,color){
+        for (var i=0; i<array.length; i++){
+          if (i+1 !=array.length){
+             plot.append("line")
+            .attr("x1",xScale(i))
+            .attr("y1",yScale(array[i].perct))
+            .attr("x2",xScale(i+1))
+            .attr("y2",yScale(array[i+1].perct))
+            .style("stroke", color);
+          }             
+        }
+      }
+
+      //Adds the name to the end of the line graph to indicate who is who
+      function addName(array, color, name, dy){
+        for (var i=0; i<array.length; i++){
+          if (i+1 !=array.length){
+             plot.append("text")
+              .attr("font-family", "Helvetica")
+              .attr("fill", color)
+              .attr("x", 720-180)
+              .attr("y", yScale(array[4].perct)+dy)
+              .attr("font-size",12)
+              .text(name);
+            
+          }             
+        }
+      }
+
+      addPoints(scurry, '#8B12C9');
+        addLine(scurry, '#8B12C9');
+        addName(scurry, '#8B12C9', "Stephen Curry (MVP)", 3);
+      addPoints(kthompson,'#491744');
+        addLine(kthompson,'#491744');
+        addName(kthompson,'#491744','Klay Thompson', 3);
+      addPoints(jredick, "brown");
+        addLine(jredick, 'brown');
+        addName(jredick, 'brown', 'JJ Redick',3);
+       addPoints(kdurant, 'gray');
+         addLine(kdurant, 'gray');
+         addName(kdurant, 'gray', 'Kevin Durant (MVP)', 3);
+      addPoints(jdudley, '#DE00FA');
+         addLine(jdudley,'#DE00FA');
+         addName(jdudley,'#DE00FA', 'Jared Dudley',3);
+      addPoints(jbayless, '#B118EB');
+         addLine(jbayless, '#B118EB');
+         addName(jbayless, '#B118EB', 'Jerry Bayless',3);
+      addPoints(kleonard, '#5c1760');
+        addLine(kleonard, '#5c1760');
+        addName(kleonard, '#5c1760', 'Kawhi Leonard', -3);
+      addPoints(ljames, 'black');
+        addLine(ljames, 'black');
+        addName(ljames, 'black', 'Lebron James (MVP)', 3);
+
+      //Creates a legend for the chart
+      var pointspergame= ['1', '2', '3', '4','5','6'
+      ,'7','8','9','10','11','12']
+      
+      plot.append("text")
+        .attr("font-family","Helvetica")
+        .attr("font-size",10)
+        .attr("x", 750-70)
+        .attr("y",95)
+        .text("Attempts/game")
+        .style("fill", "#800080");
+
+      //append points per game data 
+      for (var x=0; x<12; x++) {
+        plot.append("circle")
+          .attr("cx", 750-35)
+          .attr("cy", 120+x*25)
+          .attr("r", rScale(pointspergame[x]))
+          .attr("fill", '#800080');
+        plot.append("text")
+          .attr("font-family", "Helvetica")
+          .attr("x", 750-20)
+          .attr("y",125+x*25)
+          .text(pointspergame[x])
+            
+        }
+        
+        //DATA:Offensive Rating (ORtg) and Three Point Attempts (ThreePAr) for entire NBA for respective years
+    var ORtgData9900= [107.3,107.9,105,104.6,107.3,108.5, 105, 104.5, 106.1, 104.3, 102.5, 105.6, 107.3, 101.5, 102.4, 108.2, 106.6, 104.7, 104.8, 104.8, 105.1, 103.5, 103.5, 100.4, 102.3, 102, 99.8, 94.2, 97.8];
+    var ThreePArData9900=[ 0.153, 0.175, 0.138, 0.184, 0.134, 0.224, 0.227, 0.186, 0.104, 0.153, 0.147, 0.232, 0.184, 0.095, 0.124, 0.157, 0.188, 0.17, 0.244, 0.183, 0.2, 0.202, 0.133, 0.136, 0.139, 0.12, 0.15, 0.167, 0.188 ];
+    var ORtgData0304=[102.2, 105.9, 110.3, 102, 103.8, 112.1, 105.5, 104.8, 100.9, 100.8, 103.9, 106.5, 107.3, 103, 102.2, 101.9, 103.7, 102.3, 101.7, 102.1, 101.4, 99.1, 101.4, 97, 103.5, 101, 98.8, 96.6, 102.7 ];
+    var ThreePArData0304=[0.177, 0.137, 0.223, 0.153, 0.203, 0.201, 0.167, 0.197, 0.227, 0.176, 0.146, 0.172, 0.294, 0.197, 0.211, 0.127, 0.17, 0.252, 0.171, 0.249, 0.18, 0.158, 0.116, 0.204, 0.156, 0.191, 0.194, 0.186, 0.184 ];
+    var ORtgData0708=[110.2, 113, 113.8, 111.4, 111.5, 113.3, 107.2, 106.8, 111.3, 111.1, 110, 110.2, 111.8, 106.4, 107.3, 106, 109.2, 107.5, 106, 106.9, 103.9, 104.6, 104, 105, 103.8, 104.7, 101.2, 105.3, 100.5, 100.5 ];
+    var ThreePArData0708=[0.249, 0.257, 0.166, 0.203, 0.239, 0.26, 0.251, 0.255, 0.322, 0.215, 0.228, 0.217, 0.295, 0.143, 0.218, 0.231, 0.241, 0.208, 0.289, 0.165, 0.19, 0.22, 0.222, 0.264, 0.185, 0.215, 0.167, 0.195, 0.134, 0.217];
+    var ORtgData1112=[107.4, 110.9, 109.8, 106.6, 103.9, 109.2, 108.5, 104.9, 106.7, 104, 104.4, 101, 106, 103.3, 106.8, 105.5, 105, 106.2, 105.7, 105.5, 104.3, 105.4, 100.9, 100.8, 103.8, 101, 101, 102.9, 101.1, 95.2 ];
+    var ThreePArData1112=[0.205, 0.257, 0.252, 0.198, 0.175, 0.243, 0.269, 0.249, 0.198, 0.157, 0.288, 0.194, 0.209, 0.271, 0.153, 0.24, 0.346, 0.238, 0.255, 0.224, 0.262, 0.248, 0.152, 0.209, 0.228, 0.196, 0.175, 0.278, 0.238, 0.169];
+    var ORtgData1516=[110.8, 114.1, 112.7, 110, 107.9, 110, 106.9, 105, 105.8, 104.3, 105.6, 104.1, 106, 108.1, 106.6, 105.7, 103.7, 107.1, 104.6, 103.9, 105.9, 105.1, 105.2, 105.4, 104.2, 106.1, 102.3, 102.6, 102.1, 98 ];
+    var ThreePArData1516=[0.223, 0.352, 0.266, 0.336, 0.319, 0.285, 0.296, 0.327, 0.348, 0.269, 0.301, 0.224, 0.285, 0.332, 0.336, 0.225, 0.233, 0.379, 0.284, 0.259, 0.261, 0.252, 0.275, 0.281, 0.192, 0.192, 0.296, 0.211, 0.295, 0.312 ];
+
+    //create blank arrays for later storage
+    var scatterdata9900= [];
+    var scatterdata0304=[];
+    var scatterdata0708=[];
+    var scatterdata1112=[];
+    var scatterdata1516=[];
+
+
+    //specific data for Golden State Warriors
+    var goldenstate = [{ORtg: 99.8, ThreePAr: 0.15}, {ORtg: 103, ThreePAr: 0.197}, {ORtg: 111.8, ThreePAr: 0.295} , {ORtg: 105.4, ThreePAr: 0.248}, {ORtg: 114.1, ThreePAr: 0.352}];
+
+    //takes in ThreePArData and ORtgData and pushes them into a new array scatterday that is a dictionary
+    function combineData(ThreePArData, ORtgData, scatterdata){
+            for (var i=0; i<ThreePArData.length;i++){
+        scatterdata.push({
+            ORtg:  ORtgData[i],
+            ThreePAr: ThreePArData[i],
+        });
+        }  
+    }
+    combineData(ThreePArData9900, ORtgData9900, scatterdata9900);
+    combineData(ThreePArData0304, ORtgData0304, scatterdata0304);
+    combineData(ThreePArData0708, ORtgData0708, scatterdata0708);
+    combineData(ThreePArData1112, ORtgData1112, scatterdata1112);
+    combineData(ThreePArData1516, ORtgData1516, scatterdata1516);
+    var ORtgDataAll=[]; //contains all ORtg Data
+    var ThreePArDataAll=[];//contains all ThreePAr Data 
+
+    //Create 1 array with all the Offensive Ratings across all NBA teams and all seasons mentioned
+    var ORtgDataYears=[ ORtgData9900, ORtgData0304, ORtgData0708, ORtgData1112, ORtgData1516];
+    for(var j=0; j<ORtgDataYears.length; j++){
+        for (var i=0; i<ORtgDataYears[j].length; i++){
+            ORtgDataAll.push(ORtgDataYears[j][i]);
+        }
+    }
+
+    //Creates 1 array with all the Three Point Attempts across all NBA teams and all seasons mentioned
+    var ThreePArYears=[ ThreePArData9900, ThreePArData0304, ThreePArData0708, ThreePArData1112, ThreePArData1516];
+    for(var j=0; j<ThreePArYears.length; j++){
+        for (var i=0; i<ThreePArYears[j].length; i++){
+            ThreePArDataAll.push(ThreePArYears[j][i]);
+        }
+    }
+    //Create Plot
+    var width = 770; 
+    var height = 600;
+    var padding = 75;  
+    var graph = d3.select("#plot2")
+                  .append("svg")
+                  .style("background", '#e9f5f8')
+                  .attr("width", width)
+                  .attr("height", height); 
+        
+    var xScale2 = d3.scale.linear()
+    .domain([0.05, 0.4]).range([padding, 720 - padding]);
+    var yScale2 = d3.scale.linear()
+    .domain([90, 120]).range([height - padding, padding]);
+    var xAxis = d3.svg.axis().scale(xScale2).orient("bottom").ticks(5);
+    var yAxis = d3.svg.axis().scale(yScale2).orient("left").ticks(10);
+    
+        graph.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0," + (height - padding) + ")")
+          .call(xAxis)
+          .selectAll("text")
+                .attr("font-size", 10)
+                .attr("font-family", "Helvetica");
+        
+        // Draw the xAxis and yAxis
+        graph.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + padding + ", 0)")
+          .call(yAxis)
+          .selectAll("text")
+          .attr("font-size", 10)
+          .attr("font-family", "Helvetica") ;
+        graph.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "middle")
+          .attr("font-family", "Helvetica")
+          .attr("x", 360)
+          .attr("y", height - 20)
+          .attr("fill", "#581352")
+          .text("Three Point Attempt Rate Percentage");
+        graph.append("text")
+          .attr("class", "y label")
+          .attr("text-anchor", "end")
+          .attr("font-family", "Helvetica")
+          .attr("x", -200)
+          .attr("y", 35)
+          .attr("fill", "#581352")
+          .attr("transform", "rotate(-90)")
+          .text("Offensive Ranking");
+        graph.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "middle")
+          .attr("font-family", "Helvetica")
+          .attr("x", 360)
+          .attr("y", 50)
+          .attr("fill", "#581352")
+          .text("Regression of 3 Point Shots Attempted and Offensive Rankings")
+          .style('font-weight', 'bold');
+
+//Adds all points onto graph
+function addPoints2(array,color){
+        for(var i=0; i<array.length; i++){
+          graph.append("circle")
+          .attr("cx", xScale2(array[i].ThreePAr))
+          .attr("cy", yScale2(array[i].ORtg))
+          .attr("r", 2)
+          .attr("fill", color);
+          }
+        }
+//makes a circle around Golden State's points
+function addCircle(array, outline_color){
+    for(var i=0; i<array.length; i++){
+          graph.append("circle")
+          .attr("cx", xScale2(array[i].ThreePAr))
+          .attr("cy", yScale2(array[i].ORtg))
+          .attr("r", 7)
+          .attr("fill", 'none')
+          .attr("stroke", outline_color)
+          .attr("stroke-width",3);
+          }
+        }
+addPoints2(scatterdata9900,"#DE00FA");
+addPoints2(scatterdata0304, "#B619EF");
+addPoints2(scatterdata0708, "#8911C7");
+addPoints2(scatterdata1112, "#5E207E");
+addPoints2(scatterdata1516, "#black");
+addCircle(goldenstate,'#841615');
+
+//Creates a legend
+function seasonLegend(season,color,dy ){
+    graph.append("circle")
+        .attr("cx", 660)
+        .attr("cy", dy)
+        .attr("r", 5)
+        .attr("fill", color);
+    graph.append("text")
+        .attr("font-family", "Helvetica")
+        .attr("x", 665)
+        .attr("y", dy+5)
+        .attr("r", 2)
+        .attr("fill", color)
+        .text(season);
+}
+seasonLegend('1999-2000','#DE00FA',150);
+seasonLegend('2003-2004','#B619EF',180);
+seasonLegend('2007-2008','#8911C7',210);
+seasonLegend('2011-2012','#5E207E',240);
+seasonLegend('2015-2016','black',270);
+graph.append("circle")
+        .attr("cx", 660)
+        .attr("cy", 300)
+        .attr("r", 5)
+        .attr("fill", 'none')
+        .attr('stroke', '#841615')
+        .attr('stroke-width',3);
+    graph.append("text")
+        .attr("font-family", "Helvetica")
+        .attr("x", 665)
+        .attr("y", 305)
+        .attr("fill", '#841615')
+        .text('Golden State');
+
+//Runs Linear Regression to return slope, intercept and r^2 coefficient
+function linearRegression(y,x) {
+    var lr = {slope: 0.0, intercept: 0.0, r2: 0.0};
+    var n = y.length;
+    var sum_x = 0;
+    var sum_y = 0;
+    var sum_xy = 0;
+    var sum_xx = 0;
+    var sum_yy = 0;
+    
+    for (var i = 0; i < n; i++) {
+      
+      sum_x += x[i];
+      sum_y += y[i];
+      sum_xy += (x[i]*y[i]);
+      sum_xx += (x[i]*x[i]);
+      sum_yy += (y[i]*y[i]);
+    } 
+
+    lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+    lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
+    lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+    return lr;
+    
+}
+var linRegData= linearRegression(ORtgDataAll, ThreePArDataAll);
+function returnY(dataArray,x) {
+    var y= dataArray.slope*x+dataArray.intercept;
+    return y;
+}
+function plotLinReg(dataArray, x1, x2){
+    var y1= returnY(dataArray, x1);
+    var y2= returnY(dataArray, x2);
+    var slope= Math.round(dataArray.slope* 100) / 100;
+    var intercept= Math.round(dataArray.intercept* 100) / 100;
+    var r2= Math.round(dataArray.r2*100)/100;
+    graph.append("line")
+      .attr("x1",xScale2(x1))
+      .attr("y1",yScale2(y1))
+      .attr("x2",xScale2(x2))
+      .attr("y2",yScale2(y2))
+      .style("stroke", 'black');
+    graph.append("text")
+        .attr("font-family", "Helvetica")
+        .attr("x", xScale2(0.32))
+        .attr("y", yScale2(y2)+80)
+        .attr("fill", '#581352')
+        .text('y='+slope+'x+'+intercept);
+    graph.append("text")
+        .attr("font-family", "Helvetica")
+        .attr("x", xScale2(0.32))
+        .attr("y", yScale2(y2)+100)
+        .attr("fill", '#581352')
+        .text("r\u00B2="+r2);    
+}
+
+//plot the line 
+plotLinReg(linRegData, 0.1,0.38);
+    function drawCourt(basketballcourt){
+        basketballcourt.append("rect")
+          .attr("x", 0)
+          .attr("y", 0)
+          .attr("height", 470)
+          .attr("width", 500)
+          .attr("fill", "none")
+          .attr("stroke", "black");
+      
+        basketballcourt.append("rect")
+          .attr("x", 171)
+          .attr("y", 280)
+          .attr("height", 190)
+          .attr("width", 160)
+          .attr("fill", "none")
+          .attr("stroke", "black");
+       
+        basketballcourt.append("rect")
+          .attr("x", 191)
+          .attr("y", 280)
+          .attr("height", 190)
+          .attr("width", 120)
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        
+    
+        basketballcourt.append("circle")
+          .attr("cx", 251)  
+          .attr("cy", 417.5)
+          .attr("r", 12.5)
+          .attr("fill", "none")
+          .attr("stroke", "red");
+  
+       basketballcourt.append("line")
+          .attr("x1", 31)
+          .attr("x2", 31)
+          .attr("y1", 470)
+          .attr("y2", 330)
+          .attr("stroke", "black");
+        basketballcourt.append("line")
+          .attr("x1", 471)
+          .attr("x2", 471)
+          .attr("y1", 470)
+          .attr("y2", 330)
+          .attr("stroke", "black");
+        basketballcourt.append("line")
+          .attr("x1", 221)
+          .attr("x2", 281)
+          .attr("y1", 430)
+          .attr("y2", 430)
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d", "M 191,280c0-33.1,26.9-60,60-60s60,26.9,60,60")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d", "M 30.8,328.4")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d","M30.8,329.4c36.6-82,115.9-146.3,219.7-145.5")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d","M471,331c-37.8-87.1-126.4-151.4-220.5-147.1" )
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d", "M 311,0c0,33.1-26.9,60-60,60s-60-26.9-60-60")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d", "M 271,0c0,11-9,20-20,20c-11,0-20-9-20-20")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d", "M 308.4,297.5C300.9,322.1,278,340,251,340c-29.1,0-53.4-20.7-58.8-48.2")
+          .attr("fill", "none")
+          .attr("stroke", "black")
+          .attr("stroke-dasharray", "10,10");
+        basketballcourt.append("path")
+          .attr("d", "M 311,280c0,2-0.1,4-0.3,6")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+        basketballcourt.append("path")
+          .attr("d", "M 191.3,286c-0.2-2-0.3-4-0.3-6")
+          .attr("fill", "none")
+          .attr("stroke", "black");
+  }
+  </script>
+
+</body>
+</html>

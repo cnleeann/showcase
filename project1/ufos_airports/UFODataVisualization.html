@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+	<script type="text/javascript" src="http://d3js.org/topojson.v1.min.js"></script>
+	<script type="text/javascript" src="ndxLoc.json"></script>
+	<script type="text/javascript" src="geoLoc.json"></script>
+	<script type="text/javascript" src="airportLoc.json"></script>
+	<script type="text/javascript" src="ufoUS_edit.json"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<!-- https://github.com/domchristie/juration -->
+	<script src="./juration/juration.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+
+	<style>
+		body {
+			font-family: "Open Sans";
+			/*background-color: lightblue; background image downloaded from: http://i.imgur.com/1ebJO.jpg*/
+			background-image: url("bg.png");
+			margin: 0;
+			/*border: dashed 1px white;*/
+		}
+		#banner {padding-left: 300px; padding-bottom: 100px; }
+		.axis path {fill: none; stroke: #aaa;}
+		.axis line {stroke: #aaa; shape-rendering: "crispEdges";}
+		.axis text {fill: #aaa; font-size: .76em;}
+
+		rect.bordered {
+				stroke: #000;
+				stroke-width:2px;
+			}
+		text.mono {
+			font-size: 9pt;
+			font-family: Consolas, courier;
+			fill: #aaa;
+		}
+		text.axis-weekend { fill: #fff; }
+
+		text.axis-peakTimes {	fill: #fff; }
+		.ufoSketch { transform:rotate(-20deg);}
+		.labelText { font-size: 8pt; text-anchor: middle; fill: white}
+		#labelTitle {
+			position: absolute;
+			width: 70px; top: 465px; left: 500px;
+			background: none;
+		}
+		#labelTitle h2 { padding: 0; margin: 0; }
+		#labelTitle p { padding: 0; margin: 0;
+			position: relative; left: 120px; top:15px;}
+
+		.spacer {
+			width: 1200px;
+			height: 130px;
+			padding: 0;
+			margin: 0;
+		}
+
+		#durationGraph, #heatmapGraph {
+			/*border: solid #ddd 1px; */
+			display:block;
+			/* top right bottom left */
+			margin: 0px 20px 0px 20px;
+			/* width: 100%;*/
+			padding-left: 50px;
+		}
+
+		.title {
+			color: #cdcdcd;
+			font-size: 1.5em;
+			font-weight: bold;
+			text-align: center;
+			/* top right bottom left */
+			margin: 20px 20px 0px 20px;
+			padding: 0 0 0 0;
+			width: 1200px;
+		}
+
+		.caption {
+			color: #cdcdcd;
+			font-size: 0.8em;
+			width: 500px;
+			margin: 0px 40px 0px 140px;
+			white-space: nowrap;
+		}
+
+		circle.dot {
+			fill: #c7d6ff;
+			stroke-width: 1px;
+			stroke: #fff5f2;
+			opacity: .2;
+		}
+
+		#durationGraph text {
+		  	fill: #cdcdcd;
+		  	font-size: .75em;
+		  	margin-bottom: 0px;
+			padding-bottom: 0px;
+		}
+
+		.ticks {
+			stroke: #cdcdcd;
+		}
+
+		.summer {
+			fill: none;
+			stroke: #d73027;
+			stroke-width: 1px;
+			opacity: 1;
+		}
+
+		.notSummer {
+			fill: none;
+			stroke: #2c7bb6;
+			stroke-width: 1px;
+			opacity: 1;
+		}
+
+		.allSeasons {
+			fill:none;
+			stroke: #8c6bb1;
+			stroke-width: 2px;
+			opacity: 1;
+		}
+
+		.summer-rect {
+			fill: #d73027;
+		}
+
+		.notSummer-rect {
+			fill: #2c7bb6;
+		}
+
+		.allSeasons-rect {
+			fill: #8c6bb1;
+		}
+		#nysMap {
+			padding-left: 100px;
+		}
+		.conclusionHead {
+			color: 	#FFD700;
+			font-size: 1.3em;
+			font-weight: bold;
+			text-align: center;
+			margin: 20pxx;
+			width: 1200px;
+			font-style: italic;
+		}
+		.conclusionTitle {
+			color: #cdcdcd;
+			font-size: 1.0em;
+			font-weight: bold;
+			text-align: center;
+			margin: 20px;
+			width: 1200px;
+			font-style: italic;
+		}
+		.conclusionText {
+			color: #8c6bb1;
+			font-size: 1.0em;
+			font-weight: bold;
+			text-align: left;
+			padding-left: 0px;
+			margin: 20px;
+			width: 900px;
+			font-style: italic;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- https://www.w3.org/People/Dean/svg/texteffects/index.html -->
+	<div id="banner">
+
+		<svg id="svgBanner" width="900" height="120">
+			<rect x="0" y="0" width="700" height="100" style="fill: #000"/>
+			<g style="overflow:hidden; text-anchor: middle; font-size:48; font-family: 'Trebuchet MS', sans-serif">
+				<defs>
+					<filter id="glow1" x="-30%" y="-30%" width="160%" height="160%">
+						<feGaussianBlur stdDeviation="10 10" result="glow"/>
+						<feMerge>
+							<feMergeNode in="glow"/>
+							<feMergeNode in="glow"/>
+							<feMergeNode in="glow"/>
+						</feMerge>
+					</filter>
+					<filter id="glow2" x="-30%" y="-30%" width="160%" height="160%">
+						<feGaussianBlur stdDeviation="5 5" result="glow"/>
+						<feMerge>
+							<feMergeNode in="glow"/>
+							<feMergeNode in="glow"/>
+						</feMerge>
+					</filter>
+					<filter id="glow3" x="-30%" y="-30%" width="160%" height="160%">
+						<feGaussianBlur stdDeviation="1 1" result="glow"/>
+					</filter>
+					<mask id="textMask">
+						<text class="bannerText" style="fill:white;" x="175" y="55">New York State</text>
+						<text class="bannerText" style="fill:white;" x="550" y="55">Reports</text>
+					</mask>
+				</defs>
+				<text class="bannerText" style="filter: url(#glow1); fill: #0f9" x="175" y="55">New York State</text>
+				<text class="bannerText" style="filter: url(#glow2); fill: #03f" x="175" y="55">New York State</text>
+				<text class="bannerText" x="175" y="55" style="fill: white">New York State</text>
+				<text class="bannerText" style="filter: url(#glow1); fill: #0f9" x="550" y="55">Reports</text>
+				<text class="bannerText" style="filter: url(#glow2); fill: #03f" x="550" y="55">Reports</text>
+				<text class="bannerText" x="550" y="55" style="fill: white">Reports</text>
+				<g mask="url(#textMask)">
+					<g style="filter: url(#glow3);">
+						<rect x="0" y="0" width="350" height="75" style="fill:#f33"/>
+						<text class="bannerText" style="fill: white" x="175" y="55">New York State</text>
+						<text class="bannerText" style="fill: white" x="550" y="55">Reports</text>
+					</g>
+				</g>
+			</g>
+
+			<g style="overflow:hidden; text-anchor: middle; font-size:50; font-family: Impact, sans-serif">
+				<defs>
+					<filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+					<feGaussianBlur stdDeviation="10 10" result="glow"/>
+						<feMerge>
+						<feMergeNode in="glow"/>
+						<feMergeNode in="glow"/>
+						<feMergeNode in="glow"/>
+						</feMerge>
+					</filter>
+				</defs>
+				<text class="bannerText" style="filter: url(#glow); fill: #0c9" font-style = "italic" x="400" y="65">UFO</text>
+				<text class="bannerText" x="400" y="65" style="fill: white" font-style = "italic" font-size="130%">UFO</text>
+			</g>
+			<text class="bannerText" style="fill: white" font-style = "italic" x="570" y="95" font-size="130%">(All years ever reported)</text>
+		</svg>
+	</div>
+<!-- _______ ______ ______ ______ ______ ______ NYS Map ______ ______ ______ ______ ______ ______ -->
+	<p class="title">UFO Reports Number for US and NYS </p>
+	<div id="nysMap">
+		<!-- top:750px; left:565px -->
+		<div id="labelTitle" style="color: #E9E081;font-size:12.5pt;">
+			Airport
+		</div>
+
+		<div id="labelTitle" style="left:410px; top:780px; width:100px;font-size:8.5pt;color: #E9E081;"><p>Small Scale <br>Enplanements:<br>10000 - 20000</p></div>
+		<div id="labelTitle" style="left:540px; top:780px; width:100px;font-size:8.5pt;color: #E9E081;"><p>Medium Scale <br>Enplanements:<br> 20000 - 100000</p></div>
+		<div id="labelTitle" style="left:710px; top:780px;font-size:8.5pt;color: #E9E081;"><p>Large Scale <br>Enplanements:<br> > 100000</p></div>
+
+		<div id="labelTitle" style="left:40px; top:660px; width:200px;">
+			<p class="caption" style="color: #cdcdcd;"><strong>Observations and Speculations: </strong>
+			<ul>
+			<li class="caption">New York County (Manhattan): &nbsp 23.45%,<br> 
+				Erie County (Buffalo): &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 6.39%, <br>
+				Suffolk County (Long island): &nbsp&nbsp&nbsp&nbsp&nbsp 5.37% <br>
+				rank top 3 places for the UFO reports.</li>
+			<li class="caption">The number of UFO reports is in direct<br> 
+				proportion to the airport enplanements<br> (average data over the years).</li>
+			</ul>
+			</p>
+		</div>
+	</div>
+
+	<div class="spacer"></div>
+	<!-- _______ ______ ______ ______ ______ ______ Duration ______ ______ ______ ______ ______ ______ -->
+	<div id="durationGraph_Title">
+		<p class="title">Duration and Count of UFOs</p>
+		<div id="durationGraph"></div>
+		<p class="caption"><strong>Observations and Speculations: </strong>
+		<ul>
+		<li class="caption">More than 60% of reports are five minutes or fewer.</li>
+		<li class="caption">The trends in sightings seem consistent, regardless of season.</li>
+		<li class="caption">There appears to be a human bias in the reported data, causing a cluster effect in 5 minute intervals.</li>
+		</ul>
+		</p>
+		<p class="caption"><em>NOTE: The raw data has been rounded to the nearest minute for linear trend lines.</em></p>
+	</div>
+
+	<div class="spacer"></div>
+	<!-- _______ ______ ______ ______ ______ ______ Heat Map ______ ______ ______ ______ ______ ______ -->
+	<div id="heatmap_Title">
+		<p class="title">Heat Map by Month and Day of Week of UFOs</p>
+		<div id="heatmapGraph"></div>
+		<p class="caption"><strong>Observations and Speculations: </strong>
+		<ul>
+		<li class="caption">Peak days of the week are Friday - Sunday.</li>
+		<li class="caption">Peak months are June through October / November.</li>
+		<li class="caption">Intuitively, more people are outside on the weekend during warmer weather.</li>
+		</ul>
+		</p>
+	</div>
+
+	<div class="spacer"></div>
+
+
+	<div id = "ufoShape">
+		<div id="shapeCaption" style="position:absolute;left:570px; top:3200px; width:300px;">
+			<p class="caption"><strong>Observations and Speculations: </strong>
+			<ul>
+			<li class="caption">People are more likely to observe a UFO at night, regardless of the shape</li>
+			<li class="caption">Simple shapes (eg. Triangle, circle, light...) seem to be more popular than <br> those complex shapes (eg. Cross, Teardrop, Chevron...)</li>
+			</ul>
+			</p>
+		</div>
+	</div>
+
+	<div>
+
+		<p class="conclusionHead" color="yellow">UFO Observation "Funny Guideline":</p>
+		<p class="conclusionTitle">If you want to observe an UFO or (what someone thinks might be an UFO) in NYS, we intuitively suggest the following tips...</p>
+		<ul style="padding-left:300px">
+		<li class="conclusionText">Go to Manhattan, Buffalo, or Long island (top 3 choices)</li>
+		<li class="conclusionText">Go out during the summer, especially on weekends at night</li>
+		<li class="conclusionText">Remember that the UFO tends to appear a short period of time. (Get your camera ready!) </li>
+		<li class="conclusionText">If you observed it, don't forget to report at: http://www.nuforc.org/index.html</li>
+		</ul>
+		<p class="conclusionTitle">Good Luck :)</p> <br>
+	</div>
+
+
+<!-- ________ ________ ________ ________ ________ Duration graph ________ ________ ________ ________ ________-->
+<script>
+
+	var width = 1100, height = 700;
+	var svg1 = d3.select("#nysMap").append("svg")
+			.attr("width", width)
+			.attr("height", height);
+
+	// 7 path, 8 circle
+	// purple
+	var colorSet = ["#edf8fb","#bfd3e6","#9ebcda","#8c6bb1","#88419d","#810f7c","#238443","#21508B","#E8E92B"];
+
+	/*------------------------------US MAP---------------------------*/
+	// mimic a dic object
+	var dicUS = new Object();
+	dicUS.id = new Array();
+	dicUS.count = new Array();
+	// load data for ufo states id & count
+	ufoUS.usData.forEach(function (report) {
+		if (dicUS.id.indexOf(report.id) == -1)
+		dicUS.id.push(report.id);
+	});
+	ufoUS.usData.forEach(function (report) {
+		if (dicUS.count.indexOf(report.Count) == -1)
+		dicUS.count.push(report.Count);
+	});
+
+	var USprojection = d3.geo.albersUsa();
+	var USpath = d3.geo.path().projection(USprojection);
+
+	var states;
+	var temp;
+
+	d3.json("us.json", function(error, shapes) {
+		states = topojson.feature(shapes, shapes.objects.states).features;
+		// draw boundary
+		var g = svg1.append("g");
+		var nys;
+		states.forEach(function (state){
+			svg1.append("path").attr("d", USpath(state))
+			. attr("class","USboundary")
+			. style("fill", "none")
+			. style("stroke", colorSet[7])
+			. style("stroke-width","1px")
+			. attr("transform","scale(0.4,0.4)");
+			if (state.id == 36){
+				nys = state;
+			}
+		});
+
+		svg1.append("path").attr("d", USpath(nys))
+			. attr("class","USboundary")
+			. style("fill", "none")
+			. style("stroke", "#F4F51D")
+			. style("stroke-width","3px")
+			. attr("transform","scale(0.4,0.4)");
+
+		// paint each state
+		svg1.selectAll(".USboundary").data(states)
+		.style("fill",function (state){
+			var stateIndex = dicUS.id.indexOf(state.id);
+			if (stateIndex < 0){
+				return "none";
+			}
+			var num = dicUS.count[stateIndex];
+			//console.log(num);
+			if (num>=100 && num<500){
+				return colorSet[0];
+			} else	if(num>=500 && num<1000){
+				return colorSet[1];
+			} else if(num>=1000 && num<1500){
+				return colorSet[2];
+			} else if(num>=1500 && num<2000){
+				return colorSet[3];
+			} else if(num>=2000 && num<4000){
+				return colorSet[4];
+			} else{
+				return colorSet[5];
+			}
+		});
+
+			// path
+		svg1.append("path")
+		.attr("d","M 283,68 q 100,150 100,300 ")
+		.attr("stroke","#F4F51D")
+		.attr("fill","none")
+		.attr("stroke-dasharray","5,5");
+		svg1.append("path")
+		.attr("d","M 315,40 q 250,80 450,0 ")
+		.attr("stroke","#F4F51D")
+		.attr("fill","none")
+		.attr("stroke-dasharray","5,5");
+
+
+	});
+
+	function addLegend(x,y,rw,rh,color,text){
+		svg1.append("rect")
+		.attr("x",x)
+		.attr("y",y)
+		.attr("width",rw)
+		.attr("height",rh)
+		.style("stroke","gray")
+		.style("fill",color);
+		svg1.append("text")
+		.text(text)
+		.attr("class","labelText")
+		.attr("x",x+20)
+		.attr("y",y+22)
+		.attr("font-size","65%");
+	}
+	addLegend(55,230,40,10,colorSet[0],">100");
+	addLegend(95,230,40,10,colorSet[1],">500");
+	addLegend(135,230,40,10,colorSet[2],">1000");
+	addLegend(175,230,40,10,colorSet[3],">1500");
+	addLegend(215,230,40,10,colorSet[4],">2000");
+	addLegend(255,230,40,10,colorSet[5],">4000");
+
+	svg1.append("text").text("UFO Reports Number:")
+	.attr("text-anchor", "middle")
+	.style("fill","#cdcdcd").style("font-size",".75em")
+	.attr("x",118).attr("y",228);
+
+	/*-------------------------------NYS MAP-------------------------------------*/
+
+	// coming from the d3 geo package
+	var NYSprojection = d3.geo.mercator()
+	.center([-74.875366, 42.88])
+	.scale(5000)
+	.translate([width/2+210, height /2 -50]);
+
+	var NYSpath = d3.geo.path().projection(NYSprojection);
+
+	var reportNumScale = d3.scale.linear().domain([Math.log2(1).toFixed(0),Math.log2(1005).toFixed(0)]).range(["#f7fbff","#08306b"]);
+
+
+	// Import Json file
+	d3.json("nys.json", function(error, world) {
+		if(error) {console.log(error);}
+
+		var counties = topojson.feature(world, world.objects.cty036).features;
+		counties.forEach(function (country){
+			svg1.append("path").attr("d", NYSpath(country))
+			. attr("class","nysPath")
+			. style("fill", "none")
+			. style("stroke",colorSet[7])
+			. style("stroke-width","1px");
+		});
+
+		// Create geoDic and initialize it
+		var geoDic = BuildDictionary();
+		geoCache.nysData.forEach(function (geo){
+			AddItem(geo.city, geo.county, geoDic);
+			return geoDic;
+		});
+
+		// Build the dictionary
+		function BuildDictionary(){
+			dic = new Object();
+			dic.Keys = new Array();
+			dic.Values = new Array();
+			return dic;
+		}
+
+		// Add key-city and value-county
+		function AddItem(key,value,dic){
+			var keyCount = dic.Keys.length;
+			var flag = true;
+			for (var i = 0; i < keyCount; i++){
+				if(dic.Keys[i] == key){
+					flag = false;
+					break;
+				}
+			}
+			if (flag){
+				dic.Keys.push(key);
+				dic.Values.push(value);
+			}else{
+				return dic;
+			}
+		}
+
+		// Build the dictionary
+		function buildCountyList(){
+			dic = new Object();
+			dic.Keys = new Array();
+			dic.Values = new Array();
+			dic.Keys = ["Albany County", "Allegany County","Bronx County", "Broome County","Cattaraugus County","Cayuga County","Chautauqua County","Chemung County","Chenango County","Clinton County","Columbia County","Cortland County","Delaware County","Dutchess County","Erie County","Essex County","Franklin County","Fulton County","Genesee County","Greene County","Hamilton County","Herkimer County","Jefferson County","Kings County","Lewis County","Livingston County", "Madison County","Monroe County","Montgomery County","Nassau County","New York County","Niagara County","Oneida County","Onondaga County","Ontario County","Orange County","Orleans County","Oswego County","Otsego County","Putnam County","Queens County","Rensselaer County","Richmond County","Rockland County","Saint Lawrence County","Saratoga County","Schenectady County","Schoharie County","Schuyler County","Seneca County","Steuben County","Suffolk County","Sullivan County","Tioga County","Tompkins County","Ulster County","Warren County","Washington County","Wayne County","Westchester County","Wyoming County","Yates County"];
+			dic.Values=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+			return dic;
+		}
+
+		// countyNumDic: the dictionary mapping county--#reports
+		var countyNumDic = buildCountyList();
+		// do counting
+		ufoData.nysData.forEach(function (report){
+			var index = geoDic.Keys.indexOf(report.City);
+			var countyName;
+			if(index >=0){
+				countyName = geoDic.Values[index];
+				var position = countyNumDic.Keys.indexOf(countyName);
+				if(position >= 0 ){
+					countyNumDic.Values[position]++;
+				}
+			}
+		});
+
+		// do painting for NYS map
+		svg1.selectAll(".nysPath").data(counties)
+		.style("fill",function (county){
+			var countyName = county.id;
+			var countyIndex = countyNumDic.Keys.indexOf(countyName);
+			if (countyIndex < 0){
+				return "none";
+			}
+			var num = countyNumDic.Values[countyIndex];
+			if (num < 25){
+				return colorSet[0];
+			}else if(num>=25 && num<50){
+				return colorSet[1];
+			}else if(num>=50 && num<100){
+				return colorSet[2];
+			}else if(num>=100 && num<200){
+				return colorSet[3];
+			}else if(num>=200 && num<300){
+				return colorSet[4];
+			//}else if(num>=100 && num<300){
+			//	return colorSet[5];
+			}else{
+				return colorSet[5];
+			}
+		});
+
+		// Define the function to map the radius
+		function findR (input){
+			if (input < 20000){
+				return 4;
+			}else if(input >=20000 && input <1000000){
+				return 12;
+			}else{
+				return 30;
+			}
+		}
+
+		// Append circles at the position of airport
+			nyAirFields.airport.forEach(function (airport){
+				var pickedCoords = NYSprojection([airport.lng, airport.lat]);
+				svg1.append("circle")
+			.attr("cx",pickedCoords[0])
+			.attr("cy",pickedCoords[1])
+			.attr("r", findR(airport.enplanements_2013))
+			.attr("fill","none")
+			.attr("stroke",colorSet[8])
+			.attr("stroke-width",2);
+			});
+
+			// Mark your place
+		var ithacaCoords = NYSprojection ([-76.5,42.4]);
+		svg1.append("path").attr("d","M 0,-6 L 3.4,5.6 -6,-1.6 H 6 L -4, 5.6 z").attr("transform","translate("+ithacaCoords[0]+","+ithacaCoords[1]+")").style("fill","#F01C85");
+		// Add Here!! for NYS map
+		svg1.append("path").attr("d","M 0,-6 L 3.4,5.6 -6,-1.6 H 6 L -4, 5.6 z").attr("transform","translate("+550+","+450+")").style("fill","#F01C85");
+		svg1.append("text").text("You are HERE!").attr("x",560).attr("y",455).attr("fill","#F01C85").style("font-size","12px");
+	});
+
+	// Add legend for NYS map
+	addLegend(396,585,70,10,colorSet[0],"0-25");
+	addLegend(466,585,70,10,colorSet[1],"25-50");
+	addLegend(536,585,70,10,colorSet[2],"50-100");
+	addLegend(606,585,70,10,colorSet[3],"100-200");
+	addLegend(676,585,70,10,colorSet[4],"200-300");
+	addLegend(746,585,70,10,colorSet[5],">300");
+
+	// Add circles for legend
+	svg1.append("circle").attr("cx",400).attr("cy",520).attr("r",4)
+	.style("fill","none").style("stroke",colorSet[8]);
+	svg1.append("circle").attr("cx",530).attr("cy",520).attr("r",12)
+	.style("fill","none").style("stroke",colorSet[8]);
+	svg1.append("circle").attr("cx",680).attr("cy",520).attr("r",30)
+	.style("fill","none").style("stroke",colorSet[8]);
+	svg1.append("text").text("UFO Reports Number:")
+	.attr("text-anchor", "middle")
+	.style("fill","#cdcdcd").style("font-size",".75em")
+	.attr("x",458).attr("y",578);
+
+
+
+	// define dimensions of graph
+	var m = [80, 80, 80, 120]; // margins
+	var w = 1180 - m[1] - m[3]; // width
+	var h = 600 - m[0] - m[2]; // height
+	var datasets = ["duration_binByMinute.tsv",
+						"duration_binByMinuteSummer.tsv",
+						"duration_binByMinuteWinter.tsv",
+						"duration_detail.tsv"];
+
+	// set scales [set manually because we are loadding 4 different datasets]
+	var xScale = d3.scale.linear().domain([0, 1800]).range([0, w]);
+	var yScale = d3.scale.linear().domain([0, 1200]).range([h, 0]);
+
+	// create a line function that can convert data[] into x and y points
+	var line = d3.svg.line()
+		.interpolate("monotone") // cardinal
+		// assign the X function to plot our line as we wish
+		.x(function(d) {
+			// console.log(d.x);
+			return xScale(d.duration);
+		})
+		.y(function(d) {
+			// console.log(d.y);
+			return yScale(d.count);
+		});
+
+	// Add an SVG element with the desired dimensions and margin.
+	var graph = d3.select("#durationGraph").append("svg:svg")
+				.attr("width", w + m[1] + m[3])
+				.attr("height", h + m[0] + m[2])
+				// .style("background-color","black")
+				.append("svg:g")
+				.attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+
+	graph.append("rect")
+			.attr("x", -30)
+			.attr("y", 250)
+			.attr("width", 1050)
+			.attr("height", 220)
+			.style("fill","black");
+	// create yAxis
+	var xAxis = d3.svg.axis().scale(xScale)
+		.tickValues([60, 300, 600, 900, 1200, 1500, 1800])
+		.tickSize(6)
+		.tickSubdivide(true)
+		// used this page for tickFormat trick:
+		// http://stackoverflow.com/questions/24541296/d3-js-time-scale-nicely-spaced-ticks-at-minute-intervals-when-data-is-in-second
+			.tickFormat(function(d) {
+					var hours = Math.floor(d / 3600),
+							minutes = Math.floor((d - (hours * 3600)) / 60),
+							seconds = d - (minutes * 60);
+					var output = "";//seconds + 's';
+					if (minutes) {
+							output = minutes + 'm ';// + output;
+					}
+					// todo: roound to nearest hour
+					if (hours) {
+							output = hours + 'h ' + output;
+					}
+					return output;
+			});
+	// Add the x-axis.
+	graph.append("svg:g")
+				.attr("class", "x axis")
+				.attr("class", "ticks")
+				.attr("transform", "translate(0," + h + ")")
+				.call(xAxis);
+
+	// create left yAxis
+	var yAxis = d3.svg.axis().scale(yScale).ticks(8).orient("left");
+	// Add the y-axis to the left
+	graph.append("svg:g")
+				.attr("class", "y axis")
+				.attr("class", "ticks")
+				.attr("transform", "translate(-25,0)")
+				.call(yAxis);
+
+
+	// used this page for reference: https://bl.ocks.org/mbostock/3883245
+	var durationChart = function(svg, tsvFile, className) {
+		d3.tsv(tsvFile,
+			function(d) {
+						return {
+							duration: +d.duration,
+							count: +d.count,
+						};
+					},
+				function(error, data) {
+				if (error) throw error;
+
+				svg.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + h + ")")
+					.call(xAxis);
+
+				svg.append("path")
+					.datum(data)
+					.attr("class", "line")
+					.attr("class", className)
+					.attr("d", line);
+			});
+		};
+
+	var v2 = durationChart(graph, datasets[1], "summer");
+	var v3 = durationChart(graph, datasets[2], "notSummer");
+	var v1 = durationChart(graph, datasets[0], "allSeasons");
+
+	d3.tsv(datasets[3],
+			function(d) {
+						return {
+							duration: +d.duration,
+							count: +d.count,
+						};
+					},
+				function(error, data) {
+				if (error) throw error;
+
+					// Add the scatterplot
+					graph.selectAll("dot")
+							.data(data)
+							.enter().append("circle")
+							.attr("class", "dot")
+							.attr("r", 3.5)
+							.attr("cx", function(d) { return xScale(d.duration); })
+							.attr("cy", function(d) { return yScale(d.count); });
+			}
+	);
+
+	// add the legend
+	// append colored rect, add adjacent text
+	var rectAllSeasonsKey = graph.append("rect")
+													.attr("x", xScale(25*60))
+													.attr("y", yScale(1100))
+													.attr("width", m[0]/4)
+													.attr("height", m[0]/4)
+													.attr("class", "allSeasons-rect");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(1100) + m[0]/6) + ")")  // centre below axis
+					.text("Jan - Dec");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(1100) + m[0]/2.5) + ")")  // centre below axis
+					.text("(All Years Recorded)");
+
+	// append colored rect, add adjacent text
+	var rectSummerKey = graph.append("rect")
+													.attr("x", xScale(25*60))
+													.attr("y", yScale(900))
+													.attr("width", m[0]/4)
+													.attr("height", m[0]/4)
+													.attr("class", "summer-rect");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(900) + m[0]/6) + ")")  // centre below axis
+					.text("Jun - Nov");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(900) + m[0]/2.5) + ")")  // centre below axis
+					.text("(Summer - Fall)");
+
+	// append colored rect, add adjacent text
+	var rectNotSummerKey = graph.append("rect")
+													.attr("x", xScale(25*60))
+													.attr("y", yScale(700))
+													.attr("width", m[0]/4)
+													.attr("height", m[0]/4)
+													.attr("class", "notSummer-rect");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(700) + m[0]/6) + ")")  // centre below axis
+					.text("Dec - May");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(700) + m[0]/2.5) + ")")  // centre below axis
+					.text("(Winter - Spring)");
+
+	var rectDetailKey = graph.append("circle")
+													.attr("class", "dot")
+								.attr("r", m[0]/(4 * 2))
+								.attr("cx", xScale(25*60) + m[0]/(4 * 2))
+								.attr("cy", yScale(500) + m[0]/(4 * 2))
+								.style("opacity", 0.25);
+
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(500) + m[0]/6) + ")")  // centre below axis
+					.text("Raw Data Points");
+			graph.append("text")
+					.attr("text-anchor", "start")
+					.attr("transform", "translate("+ (xScale(25*60) + m[0]/3) + "," + (yScale(500) + m[0]/2.5) + ")")  // centre below axis
+					.text("(Not rounded to minutes)");
+
+
+	// now add titles to the axes
+			graph.append("text")
+					.attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+					.attr("transform", "translate("+ (xScale(0) - (m[3]/(3/2))) + "," + (h/2) + ")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+					.text("Number of Sightings");
+
+			graph.append("text")
+					.attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
+					.attr("transform", "translate("+ (w/2) + "," + (yScale(0) + (m[2]/2)) + ")")  // centre below axis
+					.text("Duration (elapsed time)");
+
+	/*******************/
+	/* Heat Map Script */
+	/*******************/
+	   var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+
+      var margin = { top: 50, right: 80, bottom: 100, left: 80 },
+          width = 1180 - margin.left - margin.right,
+          height = 430 - margin.top - margin.bottom,
+          gridWidth = Math.floor(width / 12),
+          gridHeight = Math.floor(height / 8),
+          legendElementWidth = gridWidth,
+
+          colors = ["#f7fcfd","#e0ecf4","#bfd3e6","#9ebcda","#8c96c6","#8c6bb1","#88419d","#6e016b"],
+          buckets = 9,
+          days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+          datasets = ["dataTime.tsv"];
+
+      var svg = d3.select("#heatmapGraph").append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      var dayLabels = svg.selectAll(".yLabel")
+          .data(days)
+          .enter().append("text")
+            .text(function (d) { return d; })
+            .attr("x", 0)
+            .attr("y", function (d, i) { return i * gridHeight; })
+            .style("text-anchor", "end")
+            .attr("transform", "translate(-6," + gridHeight / 1.5 + ")")
+            .attr("class", function (d, i) { return ((i >= 1 && i <= 4) ? "yLabel mono axis" : "yLabel mono axis axis-weekend"); });
+
+      var timeLabels = svg.selectAll(".xLabel")
+          .data(months)
+          .enter().append("text")
+            .text(function(d) { return d; })
+            .attr("x", function(d, i) { return i * gridWidth; })
+            .attr("y", 0)
+            .style("text-anchor", "middle")
+            .attr("transform", "translate(" + gridWidth / 2 + ", -6)")
+            .attr("class", function(d, i) { return ((i >= 5 && i <= 9) ? "xLabel mono axis axis-peakTimes" : "xLabel mono axis"); });
+
+      var heatmapChart = function(tsvFile) {
+        d3.tsv(tsvFile,
+        function(d) {
+          return {
+            month: +d.month,
+            day: +d.day,
+            value: +d.value
+          };
+        },
+        function(error, data) {
+            // set ranges for color assignment
+            var colorScale = d3.scale.threshold()
+                .domain([0, 15, 30, 45, 60, 80, 100, 120])
+                .range([0].concat(colors));
+//          var colorScale = d3.scale.quantile()
+//              .domain([0, buckets - 1, d3.max(data, function (d) { return d.value; })])
+//              .range(colors);
+
+          var heatmap = svg.selectAll(".month")
+              .data(data, function(d) {return d.day+':'+d.month;});
+
+          heatmap.append("title");
+
+          heatmap.enter().append("rect")
+              .attr("x", function(d) { return (d.month - 1) * gridWidth; })
+              .attr("y", function(d) { return (d.day - 1) * gridHeight; })
+              .attr("rx", 4)
+              .attr("ry", 4)
+              .attr("class", "month bordered")
+              .attr("width", gridWidth)
+              .attr("height", gridHeight)
+              .style("fill", colors[0]);
+
+          heatmap.transition().duration(1000)
+              .style("fill", function(d) { return colorScale(d.value); });
+
+          heatmap.select("title").text(function(d) { return d.value; });
+
+          heatmap.exit().remove();
+
+          // http://stackoverflow.com/questions/18042345/d3-library-how-to-set-the-legend-values
+          var legend = svg.selectAll(".legend")
+              .data(colorScale.domain(), function(d) { return d; })
+
+          legend.enter().append("g")
+              .attr("class", "legend");
+
+          legend.append("rect")
+            .attr("x", function(d, i) { return legendElementWidth * i * 12/8; })
+            .attr("y", height)
+            .attr("width", legendElementWidth * 12/8)
+            .attr("height", gridHeight / 2)
+            .style("fill", function(d, i) { return colors[i]; });
+
+          legend.append("text")
+            .attr("class", "mono")
+            .text(function(d) { return "≥ " + Math.round(d); })
+            .attr("x", function(d, i) { return legendElementWidth * i * 12 / 8; })
+            .attr("y", height + gridHeight);
+
+          legend.exit().remove();
+
+        });
+      };
+
+      heatmapChart(datasets[0]);
+
+      var datasetpicker = d3.select("#dataset-picker").selectAll(".dataset-button")
+        .data(datasets);
+
+      datasetpicker.enter()
+        .append("input")
+        .attr("value", function(d){ return "Dataset " + d })
+        .attr("type", "button")
+        .attr("class", "dataset-button")
+        .on("click", function(d) {
+          heatmapChart(d);
+        });
+
+
+	// _______ _______ _______ _______ _______ Shape graph & UFO/Alien figure _______ _______ _______ _______ _______
+	// count Time & Shape
+	var shapeArr = [];
+	var shapeObjArr = [];
+
+	// store all shape names
+	ufoData.nysData.forEach(function (report) {
+		var shapeStr = report.Shape;
+		if (shapeArr.indexOf(shapeStr) == -1)
+		shapeArr.push(shapeStr);
+	});
+
+	// create an object for each shape, and add attributes
+	for (var i = 0; i < shapeArr.length; i++){
+		shapeObjArr.push({
+			shape: shapeArr[i],
+			countTotal: 0,
+			countDay: 0,
+			countNit: 0
+		});
+	}
+
+	// travese the dataset, count the total number of occurence for each shape object
+	var len = ufoData.nysData.length;
+	for (var i = 0; i < len; i++){
+		for (var j = 0; j < shapeArr.length; j++){
+			if (ufoData.nysData[i].Shape == shapeArr[j]) {
+				shapeObjArr[j].countTotal++;
+				var tStr = ufoData.nysData[i].Time;
+				var tIndex = tStr.indexOf(" ");
+				var hourStr = tStr.slice(tIndex+1, tIndex+3);
+				if (hourStr > "06" && hourStr < "18") {
+					shapeObjArr[j].countDay++;
+				}
+				else {
+					shapeObjArr[j].countNit++;
+				}
+			}
+		}
+	}
+
+	var svg2 = d3.select("#ufoShape")
+							.append("svg")
+							.attr("width", 1250)
+							.attr("height", 1300);
+							// .style("background-color","black");
+	// sort the total count
+	var Num = [];
+	for (var k = 0; k < shapeObjArr.length; k++) {
+		Num.push(shapeObjArr[k].countTotal);
+	}
+	Num.sort(function(a, b){
+		return a - b;
+	});
+
+	// coefficient of histogram scale
+	var coe = 1	, padY = 400, padX = 280, rectWidth = 25, interval = 40;
+
+	//light beam path
+	svg2.append("path")
+	.attr("d","M250,250 L1230,1000 Q890,1180 50,1100 Z ")
+	.attr("fill","#ADFF2F")
+	.attr("fill-opacity","0.25");
+
+	//alien image: download from https://pixabay.com/zh/%E5%A4%96%E6%98%9F%E4%BA%BA-%E8%83%9C%E5%88%A9-%E7%AB%8B%E5%9C%BA-%E6%98%BE%E7%A4%BA-%E6%89%8B-%E7%9C%BC%E7%9D%9B-%E4%BE%A7%E5%BD%B1-%E9%BB%91-%E5%8D%A1%E9%80%9A-306013/
+	svg2.append("image")
+	.attr("xlink:href", "black-alien-th.png")
+	.attr("x","810")
+	.attr("y","860")
+	.attr("height","100px")
+	.attr("width","100px");
+
+// UFO icon
+	svg2.append("ellipse")
+	.attr("cx", padX - 120)
+	.attr("cy", padY - 106)
+	.attr("rx", 65)
+	.attr("ry", 50)
+	.attr("class","ufoSketch")
+	.style("fill", "#D6EBFC")
+	.style("stroke", "none")
+	.style("stroke-width", 1);
+
+	svg2.append("ellipse")
+	.attr("cx", padX- 120)
+	.attr("cy", padY - 80)
+	.attr("rx", 180)
+	.attr("ry", 25)
+	.attr("class","ufoSketch")
+	.style("fill", "#415CAA")
+	.style("stroke", "none")
+	.style("stroke-width", 2);
+
+	svg2.append("ellipse")
+	.attr("cx", padX- 120)
+	.attr("cy", padY - 105)
+	.attr("rx", 65)
+	.attr("ry", 20)
+	.attr("class","ufoSketch")
+	.style("fill", "#D6EBFC");
+		// blue alien figure: download from: http://c3e308.medialib.glogster.com/media/c7/c7b6c00c9241a01e1cf2ee3702e5625cd6578540352dcab44a862247d5554b5d/alien.png
+	svg2.append("image")
+	.attr("xlink:href", "blue-alien.png")
+	.attr("x",padX- 135)
+	.attr("y",padY - 150)
+	.attr("height","55px")
+	.attr("width","55px")
+	.attr("transform","rotate(-17)");
+	svg2.append("line")
+	.attr("x1",padX)
+	.attr("y1",padY)
+	.attr("x2",padX)
+	.attr("y2",1000)
+	.style("stroke-linecap", "round")
+	.style("stroke-dasharray", "1,3")
+	.style("stroke", "grey")
+	.style("stroke-width", 1);
+	// title & caption
+	svg2.append("text")
+	.text("Total Reports by Each Shape: Day & Night")
+	.attr("x", 400)
+	.attr("y", 80)
+	.style("fill", "#cdcdcd")
+	.style("font-size","160%")
+
+	for (var i = 0; i < Num.length; i++) {
+		for (var j = 0; j < shapeObjArr.length; j++) {
+			if (Num[i] == shapeObjArr[j].countTotal) {
+				// Total
+				svg2.append("rect")
+				.attr("id", "rect" + i)
+				.attr("x", padX)
+				.attr("y", padY + interval * i)
+				.attr("width", Num[i] * coe)
+				.attr("height", rectWidth)
+				.attr("rx", 5).attr("ry", 6)
+				.style("fill", "#F7FCFD")
+				.style("stroke","black")
+				.style("stroke-width", 1.5);
+				// Night
+				svg2.append("rect")
+				.attr("id", "rectN" + i)
+				.attr("x", padX)
+				.attr("y", padY + interval * i)
+				.attr("width", shapeObjArr[j].countNit * coe)
+				.attr("height", rectWidth)
+				.attr("rx", 5).attr("ry", 6)
+				.style("fill", "#8c6bb1")
+				.style("stroke","black")
+				.style("stroke-width", 1);
+
+				// shape title
+				var titleY = padY + interval * i + rectWidth / 2;
+				svg2.append("text")
+				.text(shapeObjArr[j].shape)
+				.attr("x", padX - 10)
+				.attr("y", titleY)
+				.attr("transform", "rotate(-15 "+padX+", "+titleY+")" )
+				.style("fill", "#F5F5DC")
+				.style("font-size","85%")
+				.style("dominant-baseline", "middle")
+				.style("text-anchor","end");
+
+				// total number
+				svg2.append("text")
+				.text(Num[i])
+				.attr("x", padX + Num[i] * coe + 5)
+				.attr("y", padY + interval * i + rectWidth / 2)
+				// .attr("transform", "rotate(-15 "+padX+", "+titleY+")" )
+				.style("fill", "#F5F5DC")
+				.style("font-size","85%")
+				.style("dominant-baseline", "middle")
+				.style("text-anchor","start");
+			}
+		}
+	}
+	// legend
+	function addShapeLegend(pos,color,text){
+		svg2.append("rect")
+		.attr("x",pos)
+		.attr("y",830)
+		.attr("width",50)
+		.attr("height",20)
+		.attr("rx", 5).attr("ry", 6)
+		.style("stroke","black")
+		.style("stroke-width", 2)
+		.style("fill",color);
+		svg2.append("text")
+		.text(text)
+		.attr("x",pos + 2)
+		.attr("y",825)
+		.attr("font-size","80%")
+		.style("fill","	#F5F5DC");
+	}
+	addShapeLegend(780,"#8c6bb1","Night");
+	addShapeLegend(830,"#F7FCFD","Daytime");
+
+</script>
+
+
+</body>
+
+</html>

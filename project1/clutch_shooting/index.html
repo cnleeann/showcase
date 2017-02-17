@@ -1,0 +1,766 @@
+<title>Project 1 Static Data Visualization</title>
+<head>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="http://d3js.org/d3.geo.projection.v0.min.js" charset="utf-8"></script>
+
+	<style>
+
+		svg { 
+			/*border: solid black 1px; */
+			vertical-align: top;
+		}
+
+		text {
+			font-family: Avenir Next;
+			fill: black;
+		}
+
+		.court rect {
+			stroke-width: 2px;
+		}
+
+		.court path {
+			stroke: black;
+			stroke-width: 1px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="court">
+		<svg id="courtInfo" height="550", width="550"></svg>
+		<svg id="courtGraph" height="600" width="600"></svg>
+	</div>
+
+	<p></p>
+
+	<div id="curry">
+		<svg id="curryInfo" height="550", width="550"></svg>
+		<svg id="curryGraph" height="600" width="600">
+			<use xlink:href="#courtLayout"/>
+		</svg>
+	</div>
+
+	<p></p>
+
+	<div id="lebron">
+		<svg id="lebronInfo" height="550", width="550"></svg>
+		<svg id="lebronGraph" height="600" width="600">
+			<use xlink:href="#courtLayout"/>
+		</svg>		
+	</div>
+
+	<p></p>
+
+	<div id="davis">
+		<svg id="davisInfo" height="550", width="550"></svg>
+		<svg id="davisGraph" height="600" width="600">
+			<use xlink:href="#courtLayout"/>
+		</svg>
+	</div>
+
+	<p></p>
+
+	<div id="westbrook">
+		<svg id="westbrookInfo" height="550", width="550"></svg>
+		<svg id="westbrookGraph" height="600" width="600">
+			<use xlink:href="#courtLayout"/>
+		</svg>
+	</div>
+
+	<p></p>
+
+	<div id="durant">
+		<svg id="durantInfo" height="550", width="550"></svg>
+		<svg id="durantGraph" height="600" width="600">
+			<use xlink:href="#courtLayout"/>
+		</svg>
+	</div>
+
+	<p align="center" style="font-family:Helvetica; font-size:12px"><br>The images and data are taken from NBA.com</p>
+
+	<script>
+
+	/********************************/
+	/*        basketball court      */
+	/********************************/
+
+	var courtSvg = d3.select("#courtGraph");
+	var height = courtSvg.attr("height");
+	var width = courtSvg.attr("width");
+
+	var g = courtSvg.append("g")
+				.attr("class", "court")
+				.attr("id", "courtLayout");
+
+	var xScale = d3.scale.linear()
+					.domain([-300,300])
+					.range([0, width]);
+	var yScale = d3.scale.linear()
+					.domain([-100,500])
+					.range([height,0]);
+
+	//outer rect
+	g.append("rect")
+		.attr("x", xScale(-300))
+		.attr("y", yScale(500))
+		.attr("width", xScale(600)-xScale(0))
+		.attr("height", yScale(0)-yScale(600))
+		.attr("fill", "none")
+		.attr("stroke", "black");
+
+	//inner rect
+	g.append("rect")
+		.attr("x", xScale(-250))
+		.attr("y", yScale(422.5))
+		.attr("width", xScale(500)-xScale(0))
+		.attr("height", yScale(0)-yScale(470))
+		.attr("fill", "none")
+		.attr("stroke", "black");
+
+	//paint
+	g.append("rect")
+		.attr("x", xScale(-80))
+		.attr("y", yScale(142.5))
+		.attr("width", xScale(160)-xScale(0))
+		.attr("height", yScale(0)-yScale(190))
+		.attr("fill", "none")
+		.attr("stroke", "black");
+
+	//backboard
+	g.append("rect")
+		.attr("x", xScale(-30))
+		.attr("y", yScale(-7.5))
+		.attr("width", xScale(60)-xScale(0))
+		.attr("height", yScale(0)-yScale(1.5))
+		.attr("fill", "black")
+		.attr("stroke", "black");
+
+	//hoop
+	g.append("circle")
+		.attr("cx", xScale(0))
+		.attr("cy", yScale(0))
+		.attr("r", 7.5*width/600)
+		.attr("fill", "none")
+		.attr("stroke", "black")
+		.attr('stroke-width', "2px");
+
+	//3 point lines & arc
+	g.append("rect")
+		.attr("x", xScale(-220))
+		.attr("y", yScale(92.5))
+		.attr("width", xScale(.1)-xScale(0))
+		.attr("height", yScale(0)-yScale(140))
+		.attr("fill", "black")
+		.attr("stroke", "black");
+
+	g.append("rect")
+		.attr("x", xScale(220))
+		.attr("y", yScale(92.5))
+		.attr("width", xScale(.1)-xScale(0))
+		.attr("height", yScale(0)-yScale(140))
+		.attr("fill", "black")
+		.attr("stroke", "black");
+
+	var radius = Math.sqrt(Math.pow(xScale(220)-xScale(0),2) + 
+						   Math.pow(yScale(0)-yScale(92.5),2));
+	var arc = d3.svg.arc()
+	    .innerRadius(radius)
+	    .outerRadius(radius+1)
+	    .startAngle(2*Math.PI/4 - 22.7/180*Math.PI)
+	    .endAngle(2*Math.PI/4 -157.3/180*Math.PI);
+
+	g.append("path")
+		.attr("transform", "translate(" + 
+			xScale(0) + "," + 
+			yScale(0) + ")")
+		.attr("d", arc);
+
+
+	//restricted area 
+	var restrictedRadius = xScale(40)-xScale(0);
+
+	var arc = d3.svg.arc()
+	    .innerRadius(restrictedRadius)
+	    .outerRadius(restrictedRadius+1)
+	    .startAngle(0-2*Math.PI/4)
+	    .endAngle(Math.PI-2*Math.PI/4);
+
+	g.append("path")
+		.attr("transform", "translate(" + 
+			xScale(0) + "," + 
+			yScale(0) + ")")
+		.attr("d", arc);
+
+	//free throw
+	var radius = xScale(60)-xScale(0);
+
+	var arc = d3.svg.arc()
+	    .innerRadius(radius)
+	    .outerRadius(radius+1)
+	    .startAngle(0-2*Math.PI/4)
+	    .endAngle(Math.PI-2*Math.PI/4);
+
+	g.append("path")
+		.attr("transform", "translate(" + 
+			xScale(0) + "," + 
+			yScale(142.5) + ")")
+		.attr("d", arc);
+
+	var arc = d3.svg.arc()
+	    .innerRadius(radius)
+	    .outerRadius(0)
+	    .startAngle(Math.PI/2)
+	    .endAngle(3/2 *Math.PI);
+
+	g.append("path")
+		.attr("fill", "none")
+		.style("stroke-width", "2px")
+		.style("stroke-dasharray", "10,8")
+		.attr("transform", "translate(" + 
+			xScale(0) + "," + 
+			yScale(142.5) + ")")
+		.attr("d", arc);
+
+	//center court
+	var radius = xScale(60)-xScale(0);
+
+	var arc = d3.svg.arc()
+		.innerRadius(radius)
+		.outerRadius(radius+1)
+		.startAngle(Math.PI-Math.PI/2)
+		.endAngle(Math.PI+Math.PI/2);
+
+	g.append("path")
+		.attr("fill", "black")
+		.attr("transform", "translate(" + 
+			xScale(0) + "," + 
+			yScale(422.5) + ")")
+		.attr("d", arc);
+
+	//inner center court
+	var radius = xScale(20)-xScale(0);
+
+	var arc = d3.svg.arc()
+		.innerRadius(radius)
+		.outerRadius(radius+1)
+		.startAngle(Math.PI-Math.PI/2)
+		.endAngle(Math.PI+Math.PI/2);
+
+	g.append("path")
+		.attr("fill", "black")
+		.attr("transform", "translate(" + 
+			xScale(0) + "," + 
+			yScale(422.5) + ")")
+		.attr("d", arc);
+
+	//legend
+	g.append("circle")
+		.attr("cx", xScale(-240))
+		.attr("cy", yScale(455))
+		.attr("r", 3*width/600)
+		.style("fill", "red");
+
+	g.append("circle")
+		.attr("cx", xScale(-240))
+		.attr("cy", yScale(442))
+		.attr("r", 3*width/600)
+		.style("fill", "#bdbdbd");
+
+	g.append("text")
+		.attr("x", xScale(-230))
+		.attr("y", yScale(450))
+		.attr("font-size", "12px")
+		.text("SHOTS MADE")
+	.append("tspan")
+		.attr("x", xScale(-230))
+		.attr("dy", 12)
+		.text("SHOTS MISSED");
+
+	/********************************/
+	/*         Plotting Data        */
+	/********************************/
+
+	var playerInfo = 
+		[{ 
+			name: "Stephen Curry",
+			data: "json/curry.json", 
+			color: "#1E6DCC",
+			svgGraph: "curryGraph",
+			svgInfo: "curryInfo",
+			imgPath: "image/curry.png",
+			pts: "30.7",
+			reb: "5.3",
+			ast: "6.6"
+		 },
+		 {
+		 	name: "Lebron James",
+		 	data: "json/lebron.json", 
+		 	color: "#76211A",
+		 	svgGraph: "lebronGraph",
+		 	svgInfo: "lebronInfo",
+		 	imgPath: "image/lebron.png",
+			pts: "24.8",
+			reb: "7.3",
+			ast: "6.6"
+		 },
+		 {
+		 	name: "Anthony Davis",
+		 	data: "json/davis.json", 
+		 	color: "#273252",
+		 	svgGraph: "davisGraph",
+		 	svgInfo: "davisInfo",
+		 	imgPath: "image/davis.png",
+			pts: "23.9",
+			reb: "10.2",
+			ast: "1.9"
+		 },
+		 { 
+		 	name: "Russell Westbrook",
+		 	data: "json/westbrook.json", 
+		 	color: "#F97A33",
+		 	svgGraph: "westbrookGraph",
+		 	svgInfo: "westbrookInfo",
+		 	imgPath: "image/westbrook.png",
+			pts: "24.3",
+			reb: "7.5",
+			ast: "10.3" 
+		 }, 
+		 { 
+		 	name: "Kevin Durant",
+		 	data: "json/durant.json", 
+		 	color: "#487BF8",
+		 	svgGraph: "durantGraph",
+		 	svgInfo: "durantInfo",
+		 	imgPath: "image/durant.png",
+			pts: "28",
+			reb: "8.2",
+			ast: "4.7"
+		 }];
+
+	/* 
+	 * addPoints takes in the 2D array of shot stats and appends
+	 * points to the basketball court specified by player_group
+	 */
+	function addPoints(rows, player_group) {
+		rows.forEach(function (row) {
+			//shot made
+			if (row[20] == 1) {
+				player_group.append("circle")
+				.attr("cx", xScale(row[17]))
+				.attr("cy", yScale(row[18]))
+				.attr("r", 3*width/600)
+				.style("fill", "red");
+			}
+			//shot missed
+			else {
+				player_group.append("circle")
+				.attr("cx", xScale(row[17]))
+				.attr("cy", yScale(row[18]))
+				.attr("r", 3*width/600)
+				.style("fill", "#bdbdbd");
+			}
+		});
+
+	}
+
+	/*
+	 * addImage takes in player index i and appends player image
+	 * to the player's svg
+	 */
+	function addImage(i) {
+		var svg = d3.select("#"+playerInfo[i].svgInfo);
+		var defs = svg.append("defs");
+		var id = "img"+i;
+		var imgPattern = defs.append("pattern")
+			.attr("id", id)
+			.attr("x", 0)
+			.attr("y", 0)
+			.attr("width", 1)
+			.attr("height", 1);
+		imgPattern.append("image")
+			.attr("x", 0)
+			.attr("y", 0)
+			.attr("width", 180)
+			.attr("height", 180)
+			.attr("xlink:href", playerInfo[i].imgPath);
+		svg.append("circle")
+			.attr("cx", 100)
+			.attr("cy", 120)
+			.attr("r", 90)
+			.attr("stroke", "#E9E9E9")
+			.attr("stroke-width", "3px")
+			.attr("fill", "url(#"+id+")");
+	};
+
+
+	/* 
+	 * plotPlayerData takes in player index i and the id of the svg, 
+	 * and calls helper function addPoints to plot (x,y) points to the SVG.
+	 */
+	function plotPlayerData (svgId, i) {
+		d3.json(playerInfo[i].data, function(error, response) {
+			if (error) { console.log(error); }
+
+			var svg = d3.select("#"+svgId);
+			var player_group = svg.append("g").attr("class", "points");
+			var playersRows = response.resultSets[0].rowSet;
+
+			addPoints(playersRows, player_group);
+		});
+	}
+
+	/* 
+	 * plotShotTypeBars takes in player index i and a dictionary 
+	 * to fill in the 4 distance bar graphs. The dictionary contains
+	 * the information of player i (totalPoints, totalShots, expectedPointsPerShot)
+	 * for each of the 4 distances.
+	 */
+	function plotShotTypeBars(i, rangesDict) {
+		var svg = d3.select("#"+playerInfo[i].svgInfo)
+
+		var xScale = d3.scale.linear()
+					.domain([0,2])
+					.range([0, 400]);
+
+		for (var j=0; j<4; j++) {
+
+			var value = rangesDict[j].expectedPointsPerShot;
+			var x = 30;
+			var y = 280+60*j;
+			var width = xScale(value);
+			var height = 30;
+
+			svg.append("rect")
+				.attr("x", x)
+				.attr("y", y)
+				.attr("rx", 14)
+			 	.attr("ry", 14)
+				.attr("width", width)
+				.attr("height", height)
+				.attr("fill", playerInfo[i].color);
+
+			svg.append("text")
+				.attr("x", x + width + 10)
+				.attr("y", y + height * .75)
+				.text(Math.round(value * 100) / 100);
+
+
+		}
+	}
+
+	/*
+	 * plotPlayerBar takes in player index and cumulative expected 
+	 * points per shot for that player. It plots the expected points 
+	 * per shot for the specified player in the summary section. 
+	 */
+	function plotPlayerBar(playerIndex, cumulativeExpectedPointsPerShot) {
+		var svg = d3.select("#courtInfo");
+
+		var xScale = d3.scale.linear()
+				.domain([0,2])
+				.range([0, 400]);
+
+		var x = 30;
+		var y = 195+60*playerIndex;		
+		var width = xScale(cumulativeExpectedPointsPerShot);
+		var height = 30;
+		svg.append("rect")
+			.attr("x", x)
+			.attr("y", y)
+			.attr("rx", 14)
+		 	.attr("ry", 14)
+			.attr("width", width)
+			.attr("height", height)
+			.attr("fill", playerInfo[playerIndex].color)
+		
+		svg.append("text")
+			.attr("x", x + width + 10)
+			.attr("y", y + height * .75)
+			.text(Math.round(cumulativeExpectedPointsPerShot * 100) / 100)
+	}
+
+	/* 
+	 * Given playerIndex, computeShotStats calculates the weighted average
+	 * points per shot for each of the 4 distance ranges. It calls the helper 
+	 * function plotShotTypeBars to plot the individual bar graphs and the 
+	 * helper function plotPlayerBar to plot the summary bar graph
+	 */
+	function computeShotStats(playerIndex) {
+
+		var rangesDict = [ {
+						   		totalPoints: 0,
+								totalShots: 0,
+								expectedPointsPerShot: 0
+							},
+
+							{
+								totalPoints: 0,
+								totalShots: 0,
+								expectedPointsPerShot: 0
+							},
+
+							{
+								totalPoints: 0,
+								totalShots: 0,
+								expectedPointsPerShot: 0
+							},
+
+							{
+								totalPoints: 0,
+								totalShots: 0,
+								expectedPointsPerShot: 0
+							}
+						];
+
+		var rangesList = ["Less Than 8 ft.","8-16 ft.", "16-24 ft.", "24+ ft."];
+
+		d3.json(playerInfo[playerIndex].data, function(error, response) {
+			if (error) { console.log(error); }
+
+			var rows = response.resultSets[0].rowSet;
+
+			// used to calculate total expectedPointsPerShot for this player on all shot types
+			cumulativeTotalPoints = 0;
+			cumulativeTotalShots = 0;
+
+			//loop through all distance ranges
+			for (var i = 0; i < rangesList.length; i++) {
+
+				var totalPoints = 0;
+				var totalShots = 0;
+
+				// for each data row
+				rows.forEach(function (row) {
+					//check the shot distance
+					if (row[15] == rangesList[i]) {
+						//check if it's a 2PT shot
+						if (row[12].indexOf("2PT") > -1){
+							//check if the shot was made
+							if (row[20] == 1){
+								totalPoints += 2; //If 2Pt shot increment Points by 2
+								totalShots +=1; //Increment shot total
+							}
+							else{
+								totalShots +=1; // increment shot total
+							}
+						}
+						//check if 3PT shot
+						else if (row[12].indexOf("3PT") > -1){
+							if (row[20] == 1){
+								totalPoints += 3;
+								totalShots +=1;
+							}
+							else{
+								totalShots +=1;
+							}
+						}
+					}
+				});
+
+				rangesDict[i].totalPoints = totalPoints;
+				rangesDict[i].totalShots = totalShots;
+				rangesDict[i].expectedPointsPerShot = totalPoints/totalShots;
+
+				cumulativeTotalPoints += totalPoints;
+				cumulativeTotalShots += totalShots;
+			}
+
+			cumulativeExpectedPointsPerShot = cumulativeTotalPoints/cumulativeTotalShots;
+
+			plotShotTypeBars(playerIndex, rangesDict);
+			plotPlayerBar(playerIndex, cumulativeExpectedPointsPerShot);
+
+		});
+	}
+
+	/* 
+	 * addInfo fills the left SVG for each player i with: name, stats, empty bar graphs
+	 */
+	function addInfo(i) {
+		var svg = d3.select("#"+playerInfo[i].svgInfo)
+		svg.append("text")
+			.attr("x", 210)
+			.attr("y", 70)
+			.style("font-size", "27px")
+			.style("font-weight", "500")
+			.style("text-transform", "uppercase")
+			.style("letter-spacing", "1px")
+			.text(playerInfo[i].name);
+
+		svg.append("text")
+			.attr("x", 210)
+			.attr("y", 100)
+			.style("font-size", "20px")
+			.style("font-weight", "500")
+			.style("text-transform", "uppercase")
+			.style("letter-spacing", "1px")
+		.append("tspan")
+			.text(playerInfo[i].pts)
+			.style("font-size", "20px")
+			.style("fill", "#F2D204")
+		.append("tspan")
+			.text(" PTS ")
+			.style("font-size", "14px")
+			.style("fill", "black")
+		.append("tspan")
+			.text(playerInfo[i].reb)
+			.style("font-size", "20px")
+			.style("fill", "#F2D204")
+		.append("tspan")
+			.text(" REB ")
+			.style("font-size", "14px")
+			.style("fill", "black")
+		.append("tspan")
+			.text(playerInfo[i].ast)
+			.style("font-size", "20px")
+			.style("fill", "#F2D204")
+		.append("tspan")
+			.text(" AST ")
+			.style("font-size", "14px")
+			.style("fill", "black")
+		;
+
+
+		svg.append("text")
+			.attr("x", 30)
+			.attr("y", 245)
+			.style("font-weight", "600")
+			.style("font-size", "20px")
+			.text("Expected points per shot");
+
+		svg.append("text")
+			.attr("x", 30)
+			.attr("y", 275)
+		.append("tspan")
+			.text("Less Than 8 ft.")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("8-16 ft.")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("16-24 ft.")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("24+ ft.");
+
+
+		for (var j=0; j<4; j++) {
+			svg.append("rect")
+				.attr("x", 30)
+				.attr("y", 280+60*j)
+				.attr("rx", 14)
+			 	.attr("ry", 14)
+				.attr("width", 400)
+				.attr("height", 30)
+				.attr("fill", "#e5e5e5");
+		}
+
+	}
+
+	/* 
+	 * addSummaryInfo fills the left SVG with title, subtitle, 
+	 * player names labels, and empty bar graphs
+	 */
+	function addSummaryInfo() {
+		var svg = d3.select("#courtInfo");
+
+		svg.append("text")
+			.attr("x", 30)
+			.attr("y", 40)
+			.style("font-size", "40px")
+			.style("font-weight", "bold")
+			.style("text-transform", "uppercase")
+			.style("letter-spacing", "0.5px")
+			.text("Shooting Statistics")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 40)
+			.text("in Clutch Situations")
+		.append("tspan")
+			.style("font-weight", "500")
+			.style("font-size", "13px")
+			.attr("x", 30)
+			.attr("dy", 25)
+			.text("Examining how and where the best players shoot")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 15)
+			.text("in the situations that matter most*")
+
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 40)
+			.style("text-transform", "none")
+			.style("font-weight", "600")
+			.style("font-size", "20px")
+			.text("Expected points per shot");
+
+		svg.append("text")
+			.attr("x", 30)
+			.attr("y", 190)
+		.append("tspan")
+			.text("Stephen Curry")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("Lebron James")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("Anthony Davis")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("Russell Westbrook")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.text("Kevin Durant")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 60)
+			.attr("font-size", "13px")
+			.text("*All of our data is from the last five minutes of the fourth quarter or overtime, from the")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 15)
+			.text("2015-16 regular season. The chart to the right contains data aggregated from all five")
+		.append("tspan")
+			.attr("x", 30)
+			.attr("dy", 15)
+			.text("players, whereas each following chart only shows shots for the player to its left.")
+
+
+		//add empty bar graph
+		for (var j=0; j<5; j++) {
+			svg.append("rect")
+				.attr("x", 30)
+				.attr("y", 196+60*j)
+				.attr("rx", 14)
+			 	.attr("ry", 14)
+				.attr("width", 400)
+				.attr("height", 30)
+				.attr("fill", "#e5e5e5");
+		}
+
+	}
+
+	//"main"
+	for (var i=0; i < playerInfo.length; i++) {
+		plotPlayerData("courtGraph", i);
+		plotPlayerData(playerInfo[i].svgGraph, i);
+		addImage(i);
+		addInfo(i);
+		addSummaryInfo();
+		computeShotStats(i);
+	}
+
+	</script>
+
+
+</body>

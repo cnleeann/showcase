@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Scale of the U.S. Debt | INFO 3300 - P1</title>
+
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- CSS -->
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="title">Scale of the U.S. National Debt</div>
+
+    <p id="blurb">
+        America is <span class="bold"><a href="http://www.usdebtclock.org/" target="_blank">swimming in debt</a></span>.
+        <br><br>
+        How does the cost of an <span class="bold">iPhone</span>, a <span class="bold">college degree</span>, a <span class="bold">corporation</span>, or even an <span class="bold">entire country</span> compare to our national debt? We decided to put this potential buying power into perspective. You can buy <span class="bold">everything on this page combined</span> with the U.S. National Debt.
+        <br><br>
+        Keep in mind the increasingly large scale which these items are plotted on. Note that the gray rounded paths link the same product over time and that the inset gray paths link the changes in scale.
+    </p>
+    <div id="wrapper"></div>
+
+    <div id="footer">
+        <!-- Trigger/Open The Modal -->
+        <button id="myBtn">Data Sources</button>
+
+        <p><a href="https://github.com/kevinschaich/us_debt" target="_blank">Made with <i class="em em-heart"></i> at Cornell</a></p>
+        <p>Inspired by <a href="http://www.informationisbeautiful.net/visualizations/million-lines-of-code/" target="_blank">Million Lines of Code</a></p>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">x</span>
+            <table id="sourceTable" align="center"></table>
+        </div>
+    </div>
+
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="chart.js"></script>
+    <script src="modal.js"></script>
+</body>
+</html>
