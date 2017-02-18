@@ -2,307 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="10b18a0f-8ee0-482e-901f-0eb2389657b9" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/blunt_analysis" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/Writeup.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/data.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/image/curry.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/image/davis.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/image/durant.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/image/lebron.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/image/westbrook.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/json/curry.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/json/davis.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/json/durant.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/json/lebron.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/json/westbrook.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/p1.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/clutch_shooting/parse.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/chart.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/data.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/design_doc.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/modal.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/debt_scale/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/drunk_driving/BAC_parsed.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/drunk_driving/gender_parsed.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/drunk_driving/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/drunk_driving/rates.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/drunk_driving/us-states.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/FoodAssistance.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/GeneralCasesDeaths.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/HealthWorkerDeaths.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/bootstrap-theme.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/bootstrap.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/bootstrap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/countryCodes.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/d3.v3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/jquery-1.11.2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/topojson.v1.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ebola_pandemic/world-50m.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/Data/AfricanCountries.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/Data/cable_data.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/Data/internet-users.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/Data/world-topo-min.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/doc.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/images/fiber.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/fiber_optics/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/gender_and_mobile_use/data.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/gender_and_mobile_use/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/hiv_aids" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/internet_access_gap/ACS2013_Internet.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/internet_access_gap/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/internet_access_gap/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/LivePattern.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/UnsuccessfulPattern.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/extract.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/extractMoney.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/overview.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/sunburst.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/kickstater_projects/treemap.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/GDP.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/countryposition.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/healthExpenditure.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/lifeExpectancy.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/population.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/life_expectancy/world.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/popular_flight_routes/airports.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/popular_flight_routes/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/popular_flight_routes/process_data.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/popular_flight_routes/processed_routes.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/popular_flight_routes/routes.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/popular_flight_routes/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/css/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/dataset.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/js/scripts.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/sass/_bootstrap.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/sass/_normalize.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/sass/_theme.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/sass/_variables.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/satellite_data/sass/style.scss" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/drunk_driving.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/ebola_pandemic.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/gender_and_mobile_use.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/internet_access_gap.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/kickstarter_projects.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/life_expectancy.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/popular_flight_routes.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/satellite_data.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/space_probes.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/student_admission.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/screenshots/titanic_survival.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/space_probes/data.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/space_probes/flags.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/space_probes/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/space_probes/planets.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/BU.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/BU.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/NAU.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/NAU.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/NYU.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/NYU.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/cornell.gif" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/cornell.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/student_admission/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/three_point_madness/Final Design Doc.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/three_point_madness/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/three_point_madness/p1.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/titanic_survival/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/titanic_survival/titanic.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/INFO5100-Report1-cl2337:cvj3:wl553.pdf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/UFODataVisualization.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/airportLoc.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/bg.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/black-alien-th.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/blue-alien.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/data.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/dataTime.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/durationDetailExtended.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/duration_binByMinute.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/duration_binByMinuteSummer.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/duration_binByMinuteWinter.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/duration_detail.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/geoLoc.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/juration/README.md" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/juration/bower.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/juration/juration.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/juration/test/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/juration/test/qunit.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/juration/test/qunit.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/ndxLoc.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/nys.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/ufoUS_edit.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project1/ufos_airports/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_air/d3.slider.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_air/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_air/jquery-1.10.2.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_air/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_air/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/city_data.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/collate.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/career.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/democratic.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/locations.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/nightlife.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/republican.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/transit.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/py/final_datasets/weather.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/questions.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/america_city/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/Chess.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chess_1000G_10L_6_3_1B.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chessboard-0.3.0/chess.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chessboard-0.3.0/css/chessboard-0.3.0.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chessboard-0.3.0/css/chessboard-0.3.0.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chessboard-0.3.0/js/chessboard-0.3.0.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chessboard-0.3.0/js/chessboard-0.3.0.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/chessboard.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/colorlegend2.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/bB.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/bK.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/bN.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/bP.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/bQ.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/bR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/wB.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/wK.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/wN.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/wP.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/wQ.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/img/chesspieces/wikipedia/wR.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/chess/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/countries_calories_life/d3.v3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/countries_calories_life/data.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/countries_calories_life/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/countries_calories_life/topojson.v1.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/countries_calories_life/world-50m.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/2008StatePop.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/2008StatePop.xlsx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/2008flights.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/airports.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/example.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/flight.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/json/cities_jpn.topo.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/json/cities_usa.topo.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/json/countries.topo.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/json/states_jpn.topo.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/json/states_usa.topo.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/disease/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/crawler/char_list.txt" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/crawler/crawler.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/crawler/throne_playground.ipynb" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/crawler/throne_raw.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/css/main.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/data/thrones_characters.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/got.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/js/d3.v3.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/js/jquery.tmpl.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/js/main.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/got/js/require.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/css/cal-heatmap.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/css/d3.slider.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/css/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/data/data5.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/data/data7.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/data/data9.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/data/final.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/data/holidayCount.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/data/world-50m.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/js/cal-heatmap.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/js/d3.slider.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/holidays/js/topojson.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/css/style.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/mmr_only.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/stories.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/tab02_antigen_iap_master.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/tab02_antigen_iap_reduced.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/tab10_wic_iap_reduced.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/tab11_nowic_iap_reduced.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/us-10m.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/data/us-pop.tsv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/js/clean.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/js/lineFunctions.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/js/nationwide.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/js/states.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/measles/js/tip.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/america_air.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/america_city.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/chess.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/countries_calories_life.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/disease.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/got.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/holidays.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/measles.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/superbowl.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/traffic_accidents.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/screenshots/workforce.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/Data/season.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/Data/superbowl.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/images/football.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/external/jquery/jquery.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_glass_55_fcf0ba_1x400.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_gloss-wave_100_ece8da_500x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_highlight-hard_100_f5f3e5_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_highlight-hard_100_fafaf4_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_highlight-hard_15_459e00_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_highlight-hard_95_cccccc_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_highlight-soft_25_67b021_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_highlight-soft_95_ffedad_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-bg_inset-soft_15_2b2922_1x100.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-icons_808080_256x240.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-icons_847e71_256x240.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-icons_8DC262_256x240.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-icons_cd0a0a_256x240.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-icons_eeeeee_256x240.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/images/ui-icons_ffffff_256x240.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.min.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.structure.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.structure.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.theme.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/jquery/jquery-ui.theme.min.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/scripts/charts.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/scripts/field.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/scripts/footballLogic.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/scripts/scoreboard.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/superbowl/scripts/ui.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/traffic_accidents/cartodb_accidents.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/traffic_accidents/font/weather_icon.otf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/traffic_accidents/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/traffic_accidents/p2taxipath.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/traffic_accidents/pothole_complaints_jan.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/traffic_accidents/taxi_trips.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/csv/byIndustrynew.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/csv/byOccupationnew.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/csv/bySectornew.csv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/index.html" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/industry_alpha.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/industry_high_low.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/occupation_alpha.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/occupation_high_low.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/sector_alpha.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/sector_high_low.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/project2/workforce/json/us.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/styles.css" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -319,7 +19,18 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="5" lean-forward="false" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
@@ -350,6 +61,7 @@
         <option value="$PROJECT_DIR$/project1/ebola_pandemic/bootstrap.min.js" />
         <option value="$PROJECT_DIR$/project1/gender_and_mobile_use/index.html" />
         <option value="$PROJECT_DIR$/project2/traffic_accidents/index.html" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -394,34 +106,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="showcase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="showcase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="showcase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project2" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="showcase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="showcase" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project1" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -502,18 +186,18 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1487455991773</updated>
-      <workItem from="1487455993583" duration="449000" />
+      <workItem from="1487455993583" duration="603000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="449000" />
+    <option name="totallyTimeSpent" value="603000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -652,6 +336,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="82" column="29" lean-forward="false" selection-start-line="82" selection-start-column="29" selection-end-line="82" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="5" lean-forward="false" selection-start-line="0" selection-start-column="5" selection-end-line="0" selection-end-column="5" />
           <folding />
         </state>
       </provider>
